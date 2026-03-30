@@ -1,0 +1,34 @@
+Agenda :
+
+1. make the project
+----------------------------------------------------------------------------------
+    C:\Users\Dell\Desktop\ERP_College_Django\erp_system>django-admin startproject erp_system
+----------------------------------------------------------------------------------
+
+2. make the apps
+
+----------------------------------------------------------------------------------
+C:\Users\Dell\Desktop\ERP_College_Django\erp_system>python manage.py startapp public_app
+
+C:\Users\Dell\Desktop\ERP_College_Django\erp_system>python manage.py startapp students
+
+C:\Users\Dell\Desktop\ERP_College_Django\erp_system>python manage.py startapp faculty
+
+C:\Users\Dell\Desktop\ERP_College_Django\erp_system>python manage.py startapp hod
+
+C:\Users\Dell\Desktop\ERP_College_Django\erp_system>python manage.py startapp Events
+
+C:\Users\Dell\Desktop\ERP_College_Django\erp_system>python manage.py startapp exams
+
+C:\Users\Dell\Desktop\ERP_College_Django\erp_system>python manage.py startapp fees
+
+C:\Users\Dell\Desktop\ERP_College_Django\erp_system>python manage.py startapp labs
+
+C:\Users\Dell\Desktop\ERP_College_Django\erp_system>python manage.py startapp cr
+----------------------------------------------------------------------------------
+3. register the apps in the settings.py.
+4. register the urls
+
+you can refer to resources_for_reference/part1.pdf
+
+
