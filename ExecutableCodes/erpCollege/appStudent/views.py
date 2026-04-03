@@ -9,5 +9,4 @@ def myfunctioncall(request):
 def logstudent(request):
     return render(request, "login_student/index.html")
 
-def loghod(request):
-    return render(request, "login_HOD/index.html")
+

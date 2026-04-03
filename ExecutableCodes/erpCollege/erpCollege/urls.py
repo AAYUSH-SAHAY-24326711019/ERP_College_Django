@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path,include
 import appStudent.views
 import appFaculty.views
+import appHOD.views
 
 
 urlpatterns = [
@@ -26,5 +27,6 @@ urlpatterns = [
     path('', appStudent.views.myfunctioncall, name="index"),
     path('logstudent/', appStudent.views.logstudent, name="logstudent"),
     path('logfaculty/', appFaculty.views.logfaculty, name="logfaculty"),
+    path('logHOD/', appHOD.views.loghod, name="loghod"),
 
 ]
