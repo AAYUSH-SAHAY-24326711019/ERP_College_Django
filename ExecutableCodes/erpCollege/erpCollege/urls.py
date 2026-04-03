@@ -17,13 +17,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path,include
-from appStudent import views
+import appStudent.views
+import appFaculty.views
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('',views.myfunctioncall,name="index"),
-    path('logstudent/', views.logstudent, name="logstudent"),
-    path('logfaculty/', views.logfaculty, name="logfaculty"),
-    path('loghod/', views.loghod, name="loghod"),
+    path('', appStudent.views.myfunctioncall, name="index"),
+    path('logstudent/', appStudent.views.logstudent, name="logstudent"),
+    path('logfaculty/', appFaculty.views.logfaculty, name="logfaculty"),
+
 ]
