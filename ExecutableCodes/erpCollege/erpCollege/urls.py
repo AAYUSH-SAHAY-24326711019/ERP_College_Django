@@ -22,5 +22,8 @@ from appStudent import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('',views.myfunctioncall,name="index")
+    path('',views.myfunctioncall,name="index"),
+    path('logstudent/', views.logstudent, name="logstudent"),
+    path('logfaculty/', views.logfaculty, name="logfaculty"),
+    path('loghod/', views.loghod, name="loghod"),
 ]
