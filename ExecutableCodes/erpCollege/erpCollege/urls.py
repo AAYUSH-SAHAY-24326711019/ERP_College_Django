@@ -27,6 +27,6 @@ urlpatterns = [
     path('', appStudent.views.myfunctioncall, name="index"),
     path('logstudent/', appStudent.views.logstudent, name="logstudent"),
     path('logfaculty/', appFaculty.views.logfaculty, name="logfaculty"),
-    path('logHOD/', appHOD.views.loghod, name="loghod"),
+    path('loghod/', appHOD.views.loghod, name="loghod"),
 
 ]

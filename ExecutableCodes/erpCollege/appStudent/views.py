@@ -3,7 +3,8 @@ from django.http import HttpResponse,JsonResponse
 
 # Create your views here.
 def myfunctioncall(request):
-    return HttpResponse("Hello World")
+    # return HttpResponse("Hello World")
+    return render(request,"MainSite/mainsite.html")
     # return render(request, "login_student/index.html")
 
 def logstudent(request):
