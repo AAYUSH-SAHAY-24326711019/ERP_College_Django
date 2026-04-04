@@ -20,11 +20,12 @@ from django.urls import path,include
 import appStudent.views
 import appFaculty.views
 import appHOD.views
+import appMainsite.views
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', appStudent.views.myfunctioncall, name="index"),
+    path('', appMainsite.views.mainsite, name="index"),
     path('logstudent/', appStudent.views.logstudent, name="logstudent"),
     path('logfaculty/', appFaculty.views.logfaculty, name="logfaculty"),
     path('loghod/', appHOD.views.loghod, name="loghod"),

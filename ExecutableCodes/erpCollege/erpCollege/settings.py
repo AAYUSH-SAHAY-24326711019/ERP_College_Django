@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "appStudent",
     "appFaculty",
     "appHOD",
+    "appMainsite",
 ]
 
 MIDDLEWARE = [
