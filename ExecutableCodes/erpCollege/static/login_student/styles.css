@@ -213,11 +213,10 @@ font-size:20px;
 }
 @media (max-width: 410px) {
 
-    .mobile-adjust {
-        transform: translateX(-40px);
-
-        z-index: -1;
-        margin-top: 7vh;
+.mobile-adjust {
+        margin-left: 0vw;
+        margin-right: 0vw;
+        height: 100vh;
     }
 
 }
@@ -243,3 +242,37 @@ font-size:20px;
 
 }
 
+@media (max-width: 425px) {
+
+.mobile-adjust {
+
+margin-left: 0vw;
+margin-right: 0vw;
+height: 100vh;
+
+}
+
+}
+
+/* ===== Fix disappearing college logo around 400px portrait devices ===== */
+
+@media (max-width: 420px) {
+
+  .image-responsive-custom {
+
+    top: 60px;                 /* bring logo back near top */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;                /* ensure visible above image */
+
+  }
+
+  .mobile-adjust {
+
+    transform: translateX(-15px);
+    margin-top: -5vh;
+    z-index: 0;
+
+  }
+
+}
