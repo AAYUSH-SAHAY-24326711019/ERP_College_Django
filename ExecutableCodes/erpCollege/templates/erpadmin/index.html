@@ -25,15 +25,17 @@
 
         <h2>LOGIN</h2>
 
-        <form>
-
+        <form method="POST">
+            {% csrf_token %}
             <div class="input-group">
 
                 <img src="{% static 'erpadmin/EmailLogo.png'%}" class="icon">
 
                 <input
-                type="email"
-                placeholder="Email address"
+                type="text"
+                placeholder="Email"
+                name="empid"
+
                 required>
 
             </div>
@@ -46,6 +48,7 @@
                 <input
                 type="password"
                 placeholder="Password"
+                name="password"
                 required>
 
             </div>
