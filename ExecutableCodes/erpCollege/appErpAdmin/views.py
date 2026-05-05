@@ -35,4 +35,4 @@ def admin_login(request):
 
         return render(request, "erpadmin/failure.html")
 
-    return render(request, "erpadmin/login.html")
+    return render(request, "erpadmin/index.html")
