@@ -4,83 +4,347 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="{% static 'MainSite/style.css' %}" />
+    <title>College ERP - Landing Page</title>
+    <!-- FONT AWESOME CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <!-- ===== CSS START ===== -->
+    <style>
+      /* RESET */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        line-height: 1.5;
+      }
+
+      /* NAVBAR */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background: #2c3e50;
+        color: white;
+        flex-wrap: wrap;
+      }
+
+      .nav-logo {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+      }
+
+      /* MARQUEE NOTICE */
+      .marquee {
+        background: #f39c12;
+        color: white;
+        padding: 5px;
+      }
+
+      /* SLIDER */
+/* SLIDER WRAPPER */
+.slider-div {
+    width: 100%;
+}
+
+/* CAROUSEL */
+.carousel {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+/* IMAGES */
+.slide {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* IMPORTANT: proper fit */
+    display: none;
+}
+
+.slide.active {
+    display: block;
+}
+
+/* BUTTONS COMMON */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); /* FIXED */
+    font-size: 30px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: none;
+}
+
+/* LEFT BUTTON */
+.prev {
+    left: 10px;
+}
+
+/* RIGHT BUTTON */
+.next {
+    right: 10px;
+}
+
+
+
+      /* MAIN SECTION */
+      .main {
+        display: flex;
+        padding: 20px;
+        gap: 20px;
+      }
+
+      .column {
+        flex: 1;
+        background: #ecf0f1;
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      /* FOOTER */
+      .footer {
+        background: #2c3e50;
+        color: white;
+        text-align: center;
+        padding: 10px;
+      }
+
+      /* ENQUIRY MODAL */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 400px;
+        position: relative;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      input,
+      select,
+      button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 768px) {
+        .main {
+          flex-direction: column;
+        }
+        .nav-links {
+          flex-direction: column;
+          width: 100%;
+        }
+      }
+
+      /* HIDE TOGGLE BY DEFAULT (DESKTOP) */
+      .menu-toggle {
+        display: none;
+        font-size: 22px;
+        cursor: pointer;
+      }
+
+      /* MOBILE VIEW */
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block; /* show logo */
+        }
+
+        .nav-links {
+          display: none; /* hide links initially */
+          flex-direction: column;
+          width: 100%;
+          background: #34495e;
+          margin-top: 10px;
+        }
+
+        .nav-links a {
+          padding: 10px;
+          border-top: 1px solid #555;
+        }
+
+        .nav-links.active {
+          display: flex; /* show when active */
+        }
+      }
+    </style>
+    <!-- ===== CSS END ===== -->
   </head>
+
   <body>
-    <div id="rotateMessage">
-      Please rotate your phone to Landscape mode and enable Desktop Site.
-    </div>
-    <div id="mainContent">
-      <!-- YOUR FULL WEBSITE CONTENT HERE -->
-    
-    <header>
-      <div class="notices">
-        <div class="noticeBTN">
-          <a href="#">Notices</a>
-        </div>
-
-        <div class="noticeMarqee">
-          <div class="marquee">
-            <div class="marquee-content">
-              Welcome to College ERP Portal 🚀 Built with Python • Django •
-              PostgreSQL • AWS • Docker
-            </div>
-          </div>
-        </div>
+    <!-- ===== NAVBAR START ===== -->
+    <div class="navbar">
+      <div class="nav-logo">College ERP</div>
+      <!-- MOBILE MENU ICON -->
+      <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#" onclick="openModal()">Enquiry</a>
       </div>
+    </div>
+    <!-- ===== NAVBAR END ===== -->
 
-      <nav>
-        <div class="logo">College PVT LTD</div>
+    <!-- ===== MARQUEE NOTICE ===== -->
+    <div class="marquee">
+      <marquee>
+        Notice: Admissions Open | Exam Schedule Released | New Courses Available
+      </marquee>
+    </div>
 
-        <div class="menu">
-          <a href="#">Home</a>
-          <a href="#">About</a>
-          <a href="#">Academics</a>
-          <a href="#">Admissions</a>
-          <a href="#">Gallery</a>
-          <a href="#">Notice Board</a>
-          <a href="#">Contact us</a>
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <div class="carousel">
+    <!-- ===== SLIDER START ===== -->
+     <div class="slider-div">
+    <div class="carousel">
         <img class="slide active" src="{% static 'MainSite/assets_images/clg_campus_1.jpg'%}" />
         <img class="slide" src="{% static 'MainSite/assets_images/clg_campus_2.jpg'%}" />
         <img class="slide" src="{% static 'MainSite/assets_images/clg_campus_3.jpg'%}" />
         <img class="slide" src="{% static 'MainSite/assets_images/clg_campus_4.jpg'%}" />
-        <button class="prev">&#10094;</button>
-        <button class="next">&#10095;</button>
+        <button class="prev">&nbsp;</button>
+        <button class="next">&nbsp;;</button>
+      </div>
+      </div>
+    <!-- ===== SLIDER END ===== -->
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main">
+      <!-- CONTACT COLUMN -->
+      <div class="column">
+        <h3>Contact Us</h3>
+        <p>Email: college@erp.com</p>
+        <p>Phone: 9999999999</p>
       </div>
 
-      <div class="card">
-        <div class="cardheading">
-          <center><h4>Events</h4></center>
-        </div>
-
-        <!-- scroller of events start-->
-        <!-- scroller of events end-->
+      <!-- NOTICE COLUMN -->
+      <div class="column">
+        <h3>Notices</h3>
+        <ul>
+          <li>Semester Exams in June</li>
+          <li>Holiday on Friday</li>
+          <li>Workshop Registration Open</li>
+        </ul>
       </div>
-
-      <div class="card">
-        <div class="cardheading">
-          <center>
-            <h4>Communication form</h4>
-          </center>
-        </div>
-        <!-- scroller of events start-->
-
-        <!-- scroller of events end-->
-      </div>
-    </main>
-    <footer>
-
-    </footer>
     </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer">
+      <p>© 2026 College ERP System</p>
+      <br />
+      <div class="container-footer">
+        <div id="social-media">
+          <i class="fa-brands fa-linkedin"></i>
+          <i class="fa-brands fa-instagram"></i>
+          <i class="fa-brands fa-facebook"></i>
+          <i class="fa-brands fa-twitter"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== MODAL (ENQUIRY FORM) ===== -->
+    <div class="modal" id="enquiryModal" onclick="outsideClick(event)">
+      <div class="modal-content">
+        <!-- CLOSE BUTTON -->
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+
+        <h3>Enquiry Form</h3>
+
+        <!-- FORM -->
+        <form>
+          <input type="text" placeholder="Name" required />
+          <input type="text" placeholder="Mobile" required />
+
+          <select required>
+            <option value="">Select Course</option>
+            <option>BCA</option>
+            <option>MCA</option>
+            <option>B.Tech</option>
+          </select>
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===== JS START ===== -->
     <script>
-      let slides = document.querySelectorAll(".slide");
+      // OPEN MODAL
+      function openModal() {
+        document.getElementById("enquiryModal").style.display = "flex";
+      }
+
+      // CLOSE MODAL
+      function closeModal() {
+        document.getElementById("enquiryModal").style.display = "none";
+      }
+
+      // CLOSE ON OUTSIDE CLICK
+      function outsideClick(event) {
+        if (event.target.id === "enquiryModal") {
+          closeModal();
+        }
+      }
+
+      window.addEventListener("load", function () {
+        // check if modal already shown in this session
+        if (!sessionStorage.getItem("enquiryShown")) {
+          setTimeout(function () {
+            openModal();
+
+            // mark as shown
+            sessionStorage.setItem("enquiryShown", "true");
+          }, 8000);
+        }
+      });
+
+      function toggleMenu() {
+        document.querySelector(".nav-links").classList.toggle("active");
+      }
+
+       let slides = document.querySelectorAll(".slide");
       let index = 0;
 
       function showSlide(i) {
@@ -94,23 +358,7 @@
 
       // auto-rotate every 3 seconds
       setInterval(() => showSlide(index + 1), 3000);
-
-      // code for rotate screen start
-      function checkOrientation() {
-        let isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
-
-        if (isMobile && window.innerHeight > window.innerWidth) {
-          document.getElementById("rotateMessage").style.display = "flex";
-          document.getElementById("mainContent").style.display = "none";
-        } else {
-          document.getElementById("rotateMessage").style.display = "none";
-          document.getElementById("mainContent").style.display = "block";
-        }
-      }
-
-      window.onload = checkOrientation;
-      window.onresize = checkOrientation;
-      // code for rotate screen end
     </script>
+    <!-- ===== JS END ===== -->
   </body>
 </html>
