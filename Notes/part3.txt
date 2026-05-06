@@ -1,3 +1,0 @@
-1. make the 2 folders as static and templates
-2. see the changes inside the settings.py
-3. add the index file inside the templates.

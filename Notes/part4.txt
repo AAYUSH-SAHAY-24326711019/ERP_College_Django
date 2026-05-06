@@ -1,6 +1,0 @@
-instructions :
-1. make the app for the faculty and HOD
-2. now then set their urls pattern
-   * currently you had made the appStudent that
-   is handling the urls for the faculty and the
-   hod, you will move those urls there.
