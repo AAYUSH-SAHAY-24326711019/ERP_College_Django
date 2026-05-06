@@ -293,12 +293,13 @@
         <h3>Enquiry Form</h3>
 
         <!-- FORM -->
-        <form>
-          <input type="text" placeholder="Name" required />
-          <input type="text" placeholder="Mobile" required />
-          <input type="text" placeholder="From" required />
+        <form method="POST">
+           {% csrf_token %}
+          <input type="text" name="name" placeholder="Name" required />
+          <input type="text" name="mobile" placeholder="Mobile" required />
+          <input type="text" name="from_place" placeholder="From" required />
 
-          <select required>
+          <select name="course" required>
             <option value="">Select Course</option>
             <option>BCA</option>
             <option>MCA</option>
