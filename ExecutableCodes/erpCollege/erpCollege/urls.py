@@ -27,10 +27,10 @@ import appErpAdmin.views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', appMainsite.views.mainsite, name="index"),
-    path('logstudent/', appStudent.views.logstudent, name="logstudent"),
     path('logfaculty/', appFaculty.views.logfaculty, name="logfaculty"),
     path('loghod/', appHOD.views.loghod, name="loghod"),
     path('erpadmin/', include('appErpAdmin.urls')),
+    path('students/', include('appStudent.urls')),
 
 
 ]

@@ -25,4 +25,24 @@ Running migrations:
   Applying auth.0012_alter_user_first_name_max_length... OK
   Applying sessions.0001_initial... OK
 
-  
+  (projectenv) PS C:\Users\Lenovo\Desktop\ERP_College_Django\ExecutableCodes\erpCollege> pip install pillow
+Collecting pillow
+  Downloading pillow-12.2.0-cp313-cp313-win_amd64.whl.metadata (9.0 kB)
+Downloading pillow-12.2.0-cp313-cp313-win_amd64.whl (7.1 MB)
+   ━━━━━━━━━━━━━━━━━━ 7.1/7.1 MB 7.8 MB/s  0:00:01
+Installing collected packages: pillow
+Successfully installed pillow-12.2.0
+
+[notice] A new release of pip is available: 26.0.1 -> 26.1.1
+[notice] To update, run: python.exe -m pip install --upgrade pip
+
+(projectenv) PS C:\Users\Lenovo\Desktop\ERP_College_Django\ExecutableCodes\erpCollege> python manage.py makemigrations appStudent
+Migrations for 'appStudent':
+  appStudent\migrations\0001_initial.py
+    + Create model Student
+(projectenv) PS C:\Users\Lenovo\Desktop\ERP_College_Django\ExecutableCodes\erpCollege> python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, appMainsite, appStudent, auth, contenttypes, sessions
+Running migrations:
+  Applying appStudent.0001_initial... OK
+(projectenv) PS C:\Users\Lenovo\Desktop\ERP_College_Django\ExecutableCodes\erpCollege>   
