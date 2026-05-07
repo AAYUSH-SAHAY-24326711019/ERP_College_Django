@@ -27,7 +27,7 @@ def student_login(request):
                             )
             else:
                 return render(request, 
-                    'student_module/student_dashboard.html',{
+                    'student_module/login.html',{
                         'error':'Invalid Password'
                     }
                             )

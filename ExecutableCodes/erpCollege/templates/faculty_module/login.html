@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>College ERP - Student Login</title>
+
+    <!-- FONT AWESOME -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <style>
+      /* =========================================
+       GLOBAL STYLES
+    ========================================== */
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      body {
+        min-height: 100vh;
+        background: #dcdcdc;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 20px;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      /* =========================================
+       MAIN LOGIN CONTAINER
+    ========================================== */
+
+      .login-container {
+        width: 100%;
+        max-width: 1100px;
+
+        min-height: 650px;
+
+        background: white;
+
+        border-radius: 20px;
+
+        overflow: hidden;
+
+        display: flex;
+
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      /* =========================================
+       LEFT PANEL
+    ========================================== */
+
+      .left-panel {
+        width: 45%;
+
+        background: #e6711d;
+
+        color: white;
+
+        padding: 50px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+
+        position: relative;
+      }
+
+      .erp-logo {
+        font-size: 38px;
+        font-weight: bold;
+
+        margin-bottom: 20px;
+      }
+
+      .erp-heading {
+        font-size: 32px;
+        line-height: 1.3;
+
+        margin-bottom: 20px;
+      }
+
+      .erp-description {
+        font-size: 16px;
+        line-height: 1.8;
+
+        color: #d9def5;
+      }
+
+      /* CIRCLE DESIGN */
+
+      .circle-one {
+        width: 180px;
+        height: 180px;
+
+        border-radius: 50%;
+
+        background: #b8c3ea;
+
+        position: absolute;
+
+        right: 4px;
+        top: 40px;
+
+        opacity: 0.35;
+      }
+
+      .circle-two {
+        width: 120px;
+        height: 120px;
+
+        border-radius: 50%;
+
+        background: #dbdff0;
+
+        position: absolute;
+
+        bottom: 40px;
+        left: -40px;
+
+        opacity: 0.25;
+      }
+
+      /* =========================================
+       RIGHT PANEL
+    ========================================== */
+
+      .right-panel {
+        width: 55%;
+
+        background: #ececec;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 40px;
+      }
+
+      /* =========================================
+       LOGIN CARD
+    ========================================== */
+
+      .login-card {
+        width: 100%;
+        max-width: 450px;
+
+        background: white;
+
+        padding: 40px;
+
+        border-radius: 20px;
+
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .login-title {
+        font-size: 32px;
+        color: #02124a;
+
+        margin-bottom: 10px;
+      }
+
+      .login-subtitle {
+        color: #555;
+
+        margin-bottom: 35px;
+
+        line-height: 1.6;
+      }
+
+      /* =========================================
+       INPUT GROUP
+    ========================================== */
+
+      .input-group {
+        margin-bottom: 25px;
+      }
+
+      .input-label {
+        display: block;
+
+        margin-bottom: 10px;
+
+        font-weight: bold;
+
+        color: #02124a;
+      }
+
+      .input-box {
+        width: 100%;
+        height: 55px;
+
+        border: none;
+
+        outline: none;
+
+        border-radius: 12px;
+
+        background: #f2f2f2;
+
+        padding: 0 18px;
+
+        font-size: 16px;
+
+        transition: 0.3s;
+      }
+
+      .input-box:focus {
+        background: #e8edff;
+
+        border: 2px solid #02124a;
+      }
+
+      /* =========================================
+       PASSWORD FIELD
+    ========================================== */
+
+      .password-wrapper {
+        position: relative;
+      }
+
+      .toggle-password {
+        position: absolute;
+
+        right: 18px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        cursor: pointer;
+
+        color: #555;
+      }
+
+      /* =========================================
+       LOGIN BUTTON
+    ========================================== */
+
+      .login-btn {
+        width: 100%;
+        height: 55px;
+
+        border: none;
+
+        background: #e87f06;
+
+        color: white;
+
+        border-radius: 12px;
+
+        font-size: 17px;
+        font-weight: bold;
+
+        cursor: pointer;
+
+        transition: 0.3s;
+
+        margin-top: 10px;
+      }
+
+      .login-btn:hover {
+        background: #031b68;
+      }
+
+      /* =========================================
+       EXTRA OPTIONS
+    ========================================== */
+
+      .extra-options {
+        margin-top: 25px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+      }
+
+      .remember-me {
+        display: flex;
+        align-items: center;
+
+        gap: 8px;
+
+        color: #444;
+      }
+
+      .forgot-password {
+        color: #02124a;
+
+        font-weight: bold;
+      }
+
+      /* =========================================
+       FOOTER TEXT
+    ========================================== */
+
+      .footer-text {
+        margin-top: 30px;
+
+        text-align: center;
+
+        color: #666;
+
+        line-height: 1.7;
+      }
+
+      /* =========================================
+       TABLET RESPONSIVE
+    ========================================== */
+
+      @media (max-width: 992px) {
+        .login-container {
+          flex-direction: column;
+
+          max-width: 700px;
+        }
+
+        .left-panel {
+          width: 100%;
+
+          min-height: 122px;
+        }
+
+        .right-panel {
+          width: 100%;
+        }
+
+        .erp-heading {
+          font-size: 28px;
+        }
+      }
+
+      /* =========================================
+       MOBILE RESPONSIVE
+    ========================================== */
+
+      @media (max-width: 768px) {
+        body {
+          padding: 15px;
+        }
+
+        .login-container {
+          min-height: auto;
+
+          border-radius: 15px;
+        }
+
+        .left-panel {
+          padding: 35px 25px;
+        }
+
+        .right-panel {
+          padding: 25px 18px;
+        }
+
+        .login-card {
+          padding: 30px 22px;
+        }
+
+        .login-title {
+          font-size: 19px;
+        }
+
+        .erp-heading {
+          font-size: 24px;
+        }
+
+        .erp-description {
+          font-size: 14px;
+        }
+
+        .extra-options {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .circle-one {
+          width: 130px;
+          height: 130px;
+
+          right: 4px;
+        }
+
+        .circle-two {
+          width: 90px;
+          height: 90px;
+        }
+      }
+
+      /* =========================================
+       SMALL MOBILE DEVICES
+    ========================================== */
+
+      @media (max-width: 480px) {
+        .login-card {
+          padding: 25px 18px;
+        }
+
+        .login-title {
+          font-size: 24px;
+        }
+
+        .input-box {
+          height: 50px;
+        }
+
+        .login-btn {
+          height: 50px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- =========================================
+       LOGIN CONTAINER
+  ========================================== -->
+
+    <div class="login-container">
+      <!-- =========================================
+         LEFT SIDE
+    ========================================== -->
+
+      <div class="left-panel">
+        <!-- Decorative Circles -->
+        <div class="circle-one"></div>
+        <div class="circle-two"></div>
+
+        <div class="erp-logo">College ERP</div>
+
+        <h1 class="erp-heading">Faculty Portal Login</h1>
+
+        <p class="erp-description"></p>
+      </div>
+
+      <!-- =========================================
+         RIGHT SIDE
+    ========================================== -->
+
+      <div class="right-panel">
+        <!-- LOGIN CARD -->
+        <div class="login-card">
+          <h2 class="login-title">Welcome Back</h2>
+
+          <p class="login-subtitle"></p>
+
+          <!-- LOGIN FORM -->
+          <form method="post">
+            {% csrf_token %}
+            <!-- EMAIL -->
+            <div class="input-group">
+              <label class="input-label"> Student Email </label>
+
+              <input
+                type="text"
+                class="input-box"
+                placeholder="Enter your email"
+                name="faculty_id"
+                required
+              />
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="input-group">
+              <label class="input-label"> Password </label>
+
+              <div class="password-wrapper">
+                <input
+                  type="password"
+                  class="input-box"
+                  id="password"
+                  placeholder="Enter your password"
+                  name="password"
+                  required
+                />
+
+                <i
+                  class="fa-solid fa-eye toggle-password"
+                  id="togglePassword"
+                ></i>
+              </div>
+            </div>
+
+            <!-- OPTIONS -->
+            <div class="extra-options">
+              <label class="remember-me">
+                <input type="checkbox" />
+                Remember Me
+              </label>
+
+              <a href="#" class="forgot-password"> Forgot Password? </a>
+            </div>
+
+            <!-- LOGIN BUTTON -->
+            <button type="submit" class="login-btn">Login</button>
+          </form>
+          {% if error %}
+          <p style="color:red;">{{ error }}</p>
+          {% endif %}
+          <!-- FOOTER -->
+          <div class="footer-text">
+            College ERP System <br />
+            Faculty Authentication Portal
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================
+       JAVASCRIPT
+  ========================================== -->
+
+    <script>
+      /*
+    ============================================
+    PASSWORD SHOW/HIDE LOGIC
+    ============================================
+    */
+
+      const togglePassword = document.getElementById("togglePassword");
+
+      const password = document.getElementById("password");
+
+      togglePassword.addEventListener("click", () => {
+        /*
+        If password type is password
+        then convert to text
+      */
+
+        if (password.type === "password") {
+          password.type = "text";
+
+          togglePassword.classList.remove("fa-eye");
+
+          togglePassword.classList.add("fa-eye-slash");
+        } else {
+          /*
+        Else convert back to password
+      */
+          password.type = "password";
+
+          togglePassword.classList.remove("fa-eye-slash");
+
+          togglePassword.classList.add("fa-eye");
+        }
+      });
+    </script>
+  </body>
+</html>
