@@ -22,6 +22,8 @@ import appFaculty.views
 import appHOD.views
 import appMainsite.views
 import appErpAdmin.views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -32,5 +34,9 @@ urlpatterns = [
     path('students/', include('appStudent.urls')),
     path('faculty/',include('appFaculty.urls'))
 
-
 ]
+
+urlpatterns += static(
+    settings.MEDIA_URL,
+    document_root=settings.MEDIA_ROOT
+)

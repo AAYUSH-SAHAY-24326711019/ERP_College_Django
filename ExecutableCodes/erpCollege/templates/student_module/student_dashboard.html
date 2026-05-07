@@ -45,6 +45,10 @@
         display: flex;
       }
 
+      hr {
+        margin-top: 35px;
+        margin-bottom: 35px;
+      }
       /* =========================
        SIDEBAR
     ========================== */
@@ -153,10 +157,11 @@
         color: #02124a;
       }
 
-      .logout-btn {
+      .button-family button {
         font-size: 26px;
         color: #02124a;
         cursor: pointer;
+        border-style: none;
       }
 
       /* =========================
@@ -385,7 +390,7 @@
             <div class="student-title">Student Dashboard</div>
           </div>
 
-          <div class="logout-btn">
+          <div class="button-family">
             <form method="POST" action="{% url 'student_logout'%}">
               {% csrf_token %}
 
@@ -394,7 +399,7 @@
                 name="student_id"
                 value="{{ student.student_id }}"
               />
-              <button type="submit">Logout</button>
+              <button class="button-family" type="submit">Logout</button>
             </form>
           </div>
         </div>
@@ -402,7 +407,16 @@
         <!-- CONTENT -->
         <div class="content">
           <!-- PROFILE -->
-          <div class="student-profile"></div>
+          <div class="student-profile" >
+           <img style="
+            width:150px;
+            height:150px;
+            object-fit: cover;
+            position: absolute;
+            right:-2%;
+            top:-11%;
+            border-radius: 50%;" src="{{ student.image.url }}"></img>
+          </div>
 
           <!-- PALETTE -->
           <div class="palette">
@@ -444,6 +458,47 @@
               <p>Operating Systems : 91%</p>
 
               <p>Django Lab : 95%</p>
+            </div>
+
+            <div class="page" id="pageG">
+              <h2>Account settings</h2>
+              <hr />
+              <div
+                id="row-style"
+                style="flex-wrap: wrap; justify-content: space-between"
+              >
+                <h3>Change Picture</h3>
+
+                <form
+                  method="POST"
+                  action="{% url 'upload_student_image' %}"
+                  enctype="multipart/form-data"
+                >
+                  {% csrf_token %}
+
+                  <input
+                    type="hidden"
+                    name="student_id"
+                    value="{{ student.student_id }}"
+                  />
+
+                  <input
+                    style="border-style: none; font-size: 20px"
+                    type="file"
+                    name="image"
+                    required
+                  />
+
+                  <button
+                    class="button-family"
+                    style="border-style: none; font-size: 20px"
+                    type="submit"
+                  >
+                    Upload Image
+                  </button>
+                </form>
+                <hr />
+              </div>
             </div>
           </div>
         </div>
