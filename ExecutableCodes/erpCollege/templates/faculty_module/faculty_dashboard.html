@@ -120,6 +120,8 @@
         margin-left: 80px;
       }
 
+      
+
       /* =========================
        TOPBAR
     ========================== */
@@ -153,10 +155,12 @@
         color: #02124a;
       }
 
-      .logout-btn {
+      .logout-btn button {
         font-size: 26px;
         color: #02124a;
         cursor: pointer;
+        border-style: none;
+        
       }
 
       /* =========================
@@ -365,11 +369,26 @@
           </li>
           <!-- LINK 8 -> DIV H -->
           <li>
-            <a href="#" onclick="showPage('pageG')">
+            <a href="#" onclick="showPage('pageH')">
               <i class="fa-solid fa-chart-column"></i>
               <span class="menu-text">Account Settings</span>
             </a>
           </li>
+
+          {% if faculty.faculty_designation == 'HOD - IT' or faculty.faculty_designation == 'HOD - Management' %}
+          <a href="#" onclick="showPage('pageI')">
+              <i class="fa-solid fa-chart-column"></i>
+              <span class="menu-text">Issue Notices</span>
+            </a>
+          </li>
+          <a href="#" onclick="showPage('pageJ')">
+              <i class="fa-solid fa-chart-column"></i>
+              <span class="menu-text">Create Time Tables</span>
+            </a>
+          </li>
+
+          {% endif %}
+
         </ul>
       </aside>
 
@@ -445,6 +464,17 @@
 
               <p>Django Lab : 95%</p>
             </div>
+            <!-- --------------------------HOD PANEL -->
+            <div class="page" id="pageI">
+              <h2>Issue Notices</h2>
+=
+            </div>
+
+            <div class="page" id="pageJ">
+              <h2>Create Time Tables</h2>
+
+            </div>
+            <!-- --------------------------HOD PANEL -->
           </div>
         </div>
       </main>
