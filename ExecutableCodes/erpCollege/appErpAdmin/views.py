@@ -1,38 +1,36 @@
-from django.shortcuts import render
-import sqlite3
-from django.contrib.auth.hashers import check_password
+from django.shortcuts import render,redirect
+from .models import ErpAdmin
+
 
 # Create your views here.
 
 
-def admin_home(request):
-    return render(request, 'erpadmin/index.html')
 
 def admin_login(request):
+    if request.method=="POST":
+        admin_email = request.POST.get('admin_email')
 
-    if request.method == "POST":
+        password = request.POST.get('password')
 
-        empid = request.POST.get("empid")
-        password = request.POST.get("password")
+        try:
+            admin = ErpAdmin.objects.get(
+                email = admin_email,
+                password=password
+            )
 
-        conn = sqlite3.connect("db.sqlite3")
-        cursor = conn.cursor()
+            #session
+            request.session['admin_id']=admin.id
+            request.session['admin_name']=admin.name
+            request.session['admin_role']=admin.role.role
 
-        cursor.execute("""
-            SELECT passwordHash, status
-            FROM erp_admins
-            WHERE empid=?
-        """, (empid,))
+            # return redirect('erp_dashboard')
+            return render(request,'erpadmin/success.html')
+        
+        except ErpAdmin.DoesNotExist:
+            return render(request,'erpadmin/index.html',{'error':'Invalid Credentials'})
+        
+    return render(request,'erpadmin/index.html')
+        
 
-        row = cursor.fetchone()
-        conn.close()
 
-        if row:
-            stored_hash, status = row
 
-            if status == "active" and check_password(password, stored_hash):
-                return render(request, "erpadmin/success.html")
-
-        return render(request, "erpadmin/failure.html")
-
-    return render(request, "erpadmin/index.html")

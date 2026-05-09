@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Login</title>
+
+<link rel="stylesheet" href="{% static 'erpadmin/styles.css'%}">
+
+</head>
+
+<body>
+
+<header class="top-ribbon">
+    <div class="admin-panel-title">Admin Panel</div>
+</header>
+
+
+<main class="page-wrapper">
+
+    <section class="login-card">
+
+        <h2>LOGIN</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="input-group">
+
+                <img src="{% static 'erpadmin/EmailLogo.png'%}" class="icon">
+
+                <input
+                type="text"
+                placeholder="Email"
+                name="empid"
+
+                required>
+
+            </div>
+
+
+            <div class="input-group">
+
+                <img src="{% static 'erpadmin/PassLogo.png'%}" class="icon">
+
+                <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                required>
+
+            </div>
+
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+    </section>
+
+
+    <section class="logo-area">
+
+        <img src="{% static 'erpadmin/ERP_Logo.png'%}">
+
+    </section>
+
+</main>
+
+</body>
+</html>
