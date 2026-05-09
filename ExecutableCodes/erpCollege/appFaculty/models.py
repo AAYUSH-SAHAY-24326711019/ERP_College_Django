@@ -57,3 +57,27 @@ class ActivityLogsFaculty(models.Model):
 
     def __str__(self):
         return f"{self.faculty.faculty_id} - {self.action}"
+    
+
+class FacultyAssignedSubject(models.Model):
+
+    faculty = models.ForeignKey(
+        Faculty,
+        on_delete=models.CASCADE,
+        to_field='faculty_id',
+        db_column='faculty_id',
+        related_name='assigned_subjects'
+    )
+
+    subject_name = models.CharField(max_length=200)
+
+    subject_code = models.CharField(max_length=20)
+
+    semester = models.CharField(max_length=20)
+
+    session = models.CharField(max_length=20)
+
+    date_assigned = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.faculty.faculty_name} - {self.subject_name}"

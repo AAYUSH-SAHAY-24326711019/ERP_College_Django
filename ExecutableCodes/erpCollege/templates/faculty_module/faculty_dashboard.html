@@ -381,12 +381,21 @@
               <span class="menu-text">Issue Notices</span>
             </a>
           </li>
-          <a href="#" onclick="showPage('pageJ')">
+          {% if faculty.faculty_designation == 'HOD - IT'%}
+          <a href="makeSchedulesIT/" onclick="showPage('pageJ')">
               <i class="fa-solid fa-chart-column"></i>
               <span class="menu-text">Create Time Tables</span>
             </a>
           </li>
+          {% endif %}
 
+          {% if faculty.faculty_designation == 'HOD - Management'%}
+          <a href="makeSchedulesM/" onclick="showPage('pageJ')">
+              <i class="fa-solid fa-chart-column"></i>
+              <span class="menu-text">Create Time Tables</span>
+            </a>
+          </li>
+          {% endif %}
           {% endif %}
 
         </ul>
