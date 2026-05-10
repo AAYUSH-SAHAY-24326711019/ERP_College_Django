@@ -646,40 +646,18 @@
 
 
 
-                    <link rel="stylesheet" href="{% static 'erpadmin/css/addStudents.css' %}">
+                    
 
                     <div class="page" id="pageD">
-                        {% csrf_token %}
+
                         <h2>Add Students To Courses</h2>
-                        <!-- One Line Form -->
-                        <div class="course-add-wrapper">
+                         {% include 'erpadmin/student_enrollment.html' %}
 
-                            <form id="addStudentsForm">
 
-                                <input type="text" id="student_ids" placeholder="Enter Student IDs (Example: 1,2,3,4)"
-                                    required>
+                    </div>
 
-                                <select id="course_id" required>
-                                    <option value="">Select Course</option>
-
-                                    <!-- Django Loop -->
-                                    {% for course in courses %}
-                                    <option value="{{ course.course_id }}">
-                                        {{ course.course_name }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-
-                                <button type="submit">
-                                    Add Students
-                                </button>
-
-                            </form>
-
-                        </div>
-
-                        <!-- Horizontal Course Tabs -->
-                        <!-- <div class="course-tabs">
+                    <!-- Horizontal Course Tabs -->
+                    <!-- <div class="course-tabs">
 
                                 {% for session in courses %}
 
@@ -692,53 +670,53 @@
 
                             </div> -->
 
-                        <div class="course-tabs">
+                    <div class="course-tabs">
 
-                            {% for session in sessions %}
+                        {% for session in sessions %}
 
-                            <button class="course-tab {% if forloop.first %}active{% endif %}"
-                                data-course="{{ session.id }}">
+                        <button class="course-tab {% if forloop.first %}active{% endif %}"
+                            data-course="{{ session.id }}">
 
-                                {{ session.complete_name }}
+                            {{ session.complete_name }}
 
-                            </button>
+                        </button>
 
-                            {% endfor %}
-
-                        </div>
-
-                        <!-- AJAX Loaded Students -->
-                        <div id="courseStudentsContainer">
-
-                            <!-- Dynamic Table Here -->
-
-                        </div>
-                    </div>
-
-                    <script src="{% static 'erpadmin/js/addStudents.js' %}"></script>
-
-
-
-
-
-                    <div class="page" id="pageI">
-                        <h2>Issue Notices</h2>
-                        =
-                    </div>
-
-                    <div class="page" id="pageJ">
-                        <h2>Create Time Tables</h2>
+                        {% endfor %}
 
                     </div>
-                    <!-- --------------------------HOD PANEL -->
+
+                    <!-- AJAX Loaded Students -->
+                    <div id="courseStudentsContainer">
+
+                        <!-- Dynamic Table Here -->
+
+                    </div>
                 </div>
+
+
+
+
+
+
+                <div class="page" id="pageI">
+                    <h2>Issue Notices</h2>
+                    =
+                </div>
+
+                <div class="page" id="pageJ">
+                    <h2>Create Time Tables</h2>
+
+                </div>
+                <!-- --------------------------HOD PANEL -->
             </div>
-        </main>
+    </div>
+    </main>
     </div>
 
     <!-- =========================
        JAVASCRIPT
   ========================== -->
+   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         /*
       ============================================
@@ -909,8 +887,8 @@
         //script section of mainsite enquiry form data end
 
 
+       </script>
 
-    </script>
 </body>
 
 </html>

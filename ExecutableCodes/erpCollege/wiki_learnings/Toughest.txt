@@ -1,0 +1,26 @@
+
+
+appStudent has model : appStudent_student
+(id, "name", student_id, course, "session", image, date_created, email)
+
+appErpAdmin has model : appErpAdmin_university
+(id, university_name)
+
+it has another model  : appErpAdmin_courses
+(id, course_name)
+
+it has another model : appErpAdmin_coursesessions
+(id, start_year, end_year, complete_name, course_id(fk from appErpAdmin_courses.id), university_id
+(fk from appErpAdmin_university.id))
+
+now appStudent has the objective model : 
+appStudent_studentcourseenrollment
+
+(id, date_created(timestamptz), course_session_id(fk from appErpAdmin_coursesessions.id), student_id(fk from appStudent_student.id))
+
+i need to make a gui using ajax.
+
+you give the comma seperated student ids inside the appStudent_student.id
+
+choose the courses in the drop down which are sourced from appErpAdmin_coursesessions.complete_name
+the form is a one liner and stores the student id into the appStudent_studentcourseenrollment

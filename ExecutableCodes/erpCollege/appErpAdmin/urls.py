@@ -17,18 +17,12 @@ urlpatterns = [
         name='save_course_session'
     ),
 
- path(
-        'add-students-to-course/',
-        views.add_students_to_course,
-        name='add_students_to_course'
-    ),
+    # +==================
+    path("student-enrollment/", views.student_enrollment_page, name="student_enrollment_page"),
+    # AJAX
+    path("ajax/get-sessions/", views.get_sessions_by_course, name="get_sessions_by_course"),
+    path("ajax/enroll-students/", views.enroll_students_to_session, name="enroll_students_to_session"),
+    # +==================
 
-
-
-    path(
-        'get-students-preview/',
-        views.get_students_preview,
-        name='get_students_preview'
-    ),
 
 ]

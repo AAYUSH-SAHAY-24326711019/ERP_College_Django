@@ -9,4 +9,6 @@ urlpatterns = [
         views.upload_student_image,
         name='upload_student_image'
     ),
+
+
 ]

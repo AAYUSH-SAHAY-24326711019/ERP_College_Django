@@ -1,0 +1,147 @@
+<h2>Student Enrollment (ERP Admin)</h2>
+
+<!-- ONE LINE FORM -->
+<div style="display:flex; gap:10px; margin-bottom:25px;">
+
+    <input type="text" id="student_ids" placeholder="Student IDs: 1,2,3" style="flex:2; padding:10px;">
+
+    <!-- COURSE GROUP -->
+    <select id="course_select" style="flex:1; padding:10px;">
+        <option value="">Select Course</option>
+        {% for c in courses %}
+        <option value="{{ c.id }}">{{ c.course_name }}</option>
+        {% endfor %}
+    </select>
+
+    <!-- SESSION -->
+    <select id="session_select" style="flex:2; padding:10px;">
+    <option value="">Select Course Session</option>
+
+    {% for s in sessions %}
+        <option value="{{ s.id }}">
+            {{ s.complete_name }}
+        </option>
+    {% endfor %}
+
+</select>
+
+    <button id="enroll_btn" style="padding:10px 15px;">
+        Enroll
+    </button>
+
+</div>
+
+<!-- COURSE GROUPED VIEW -->
+<div id="course_container">
+
+    {% for c in courses %}
+    <div class="course-box" style="margin-bottom:20px;">
+
+        <h3 style="background:#eee; padding:10px;">
+            {{ c.course_name }}
+        </h3>
+
+        <div class="session-box" id="course_{{ c.id }}" style="padding:10px; border:1px solid #ddd;">
+            Loading...
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        // -------------------------
+        // LOAD SESSIONS IN DROPDOWN
+        // -------------------------
+        $("#course_select").on("change", function () {
+
+    let course_code = $("#course_select option:selected").text().trim();
+
+    $.ajax({
+        url: "/ajax/get-sessions/",
+        data: {
+            course_code: course_code.split("_")[0]  // MCA / MBA
+        },
+        success: function (data) {
+            let html = '<option value="">Select Session</option>';
+
+            data.forEach(function (s) {
+                html += `<option value="${s.id}">
+                            ${s.complete_name}
+                         </option>`;
+            });
+
+            $("#session_select").html(html);
+        }
+    });
+
+});
+
+
+        // -------------------------
+        // ENROLL STUDENTS
+        // -------------------------
+        $("#enroll_btn").on("click", function () {
+
+            $.ajax({
+                url: "/ajax/enroll-students/",
+                type: "POST",
+                data: {
+                    student_ids: $("#student_ids").val(),
+                    session_id: $("#session_select").val(),
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success: function (res) {
+
+                    alert(
+                        "Enrolled: " + res.created +
+                        "\nFailed: " + res.failed
+                    );
+
+                    // refresh view
+                    $("#course_select").trigger("change");
+                }
+            });
+
+        });
+
+
+        // -------------------------
+        // LOAD COURSE GROUPED SESSIONS
+        // -------------------------
+        function loadCourseWiseSessions(course_id) {
+
+            $.ajax({
+                url: "/ajax/get-sessions/",
+                data: { course_id: course_id },
+                success: function (data) {
+
+                    let html = "";
+
+                    data.forEach(function (s) {
+                        html += `
+                        <div style="padding:6px; border-bottom:1px solid #ddd;">
+                            📘 ${s.complete_name}
+                        </div>
+                    `;
+                    });
+
+                    $("#course_" + course_id).html(html);
+                }
+            });
+        }
+
+    });
+
+</script>

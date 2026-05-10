@@ -5,11 +5,15 @@ from django.shortcuts import render,redirect
 from .models import ErpAdmin
 from appMainsite.models import MainsiteEnquiryForm
 from appStudent.models import Student,StudentCourseEnrollment
-from appErpAdmin.models import CourseSessions
+from appErpAdmin.models import Courses,University,CourseSessions
 import csv
 import calendar
 from datetime import datetime
-from .models import Courses,University,CourseSessions
+from django.utils.timezone import now
+
+
+
+
 
 
 # Create your views here.
@@ -292,101 +296,71 @@ def save_course_session(request):
     return JsonResponse({'error': 'Invalid Request'})
 
 
-# ==========================
-# STUDENT PREVIEW AJAX
-# ==========================
+def student_enrollment_page(request):
 
-def get_students_preview(request):
+    courses = Courses.objects.all()
+    sessions = CourseSessions.objects.all()
+    print(sessions)
 
+    # group manually in template OR pass structured dict
+    return render(request, "erpadmin/student_enrollment.html", {
+        "courses": courses,
+        "sessions": sessions
+    })
+
+def get_sessions_by_course(request):
+    course_code = request.GET.get("course_code")  # MCA / MBA etc.
+
+    sessions = CourseSessions.objects.filter(
+        complete_name__startswith=course_code
+    ).values("id", "complete_name")
+
+    return JsonResponse(list(sessions), safe=False)
+
+
+@csrf_exempt
+def enroll_students_to_session(request):
     if request.method == "POST":
 
-        data = json.loads(request.body)
+        student_ids = request.POST.get("student_ids", "")
+        session_id = request.POST.get("session_id")
 
-        student_ids = data.get("student_ids", "")
-
-        ids_list = [
-            x.strip()
-            for x in student_ids.split(",")
-            if x.strip()
+        # clean input
+        student_id_list = [
+            s.strip() for s in student_ids.split(",") if s.strip()
         ]
 
-        students = Student.objects.filter(
-            student_id__in=ids_list
-        )
+        session = CourseSessions.objects.get(id=session_id)
 
-        student_data = []
+        created = 0
+        failed = 0
 
-        for student in students:
+        for sid in student_id_list:
+            try:
+                student = Student.objects.get(id=sid)
 
-            student_data.append({
+                # avoid duplicates (important in ERP)
+                exists = StudentCourseEnrollment.objects.filter(
+                    student_id=student,
+                    course_session_id=session
+                ).exists()
 
-                "id": student.id,
-                "student_id": student.student_id,
-                "name": student.name
+                if not exists:
+                    StudentCourseEnrollment.objects.create(
+                        student_id=student,
+                        course_session_id=session,
+                        date_created=now()
+                    )
+                    created += 1
 
-            })
+            except:
+                failed += 1
 
         return JsonResponse({
-            "students": student_data
+            "status": "success",
+            "created": created,
+            "failed": failed
         })
 
-    return JsonResponse({
-        "students": []
-    })
+    return JsonResponse({"status": "error"})
 
-def add_students_to_course(request):
-
-    if request.method == "POST":
-
-        data = json.loads(request.body)
-
-        student_ids = data.get("student_ids")
-        course_id = data.get("course_id")
-
-        ids_list = [x.strip() for x in student_ids.split(",")]
-
-        try:
-
-            course = CourseSessions.objects.get(id=course_id)
-
-            added_count = 0
-
-            for sid in ids_list:
-
-                try:
-
-                    student = Student.objects.get(student_id=sid)
-
-                    already_exists = StudentCourseEnrollment.objects.filter(
-                        student=student,
-                        course_session=course
-                    ).exists()
-
-                    if not already_exists:
-
-                        StudentCourseEnrollment.objects.create(
-                            student=student,
-                            course_session=course
-                        )
-
-                        added_count += 1
-
-                except Student.DoesNotExist:
-                    continue
-
-            return JsonResponse({
-                "status": "success",
-                "message": f"{added_count} students added successfully"
-            })
-
-        except CourseSessions.DoesNotExist:
-
-            return JsonResponse({
-                "status": "error",
-                "message": "Course not found"
-            })
-
-    return JsonResponse({
-        "status": "error",
-        "message": "Invalid Request"
-    })
