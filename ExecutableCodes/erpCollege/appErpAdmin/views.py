@@ -253,9 +253,14 @@ def course_session_page(request):
     courses = CourseSessions.objects.all()
     universities = University.objects.all()
 
+    sessions = CourseSessions.objects.select_related(
+        'course', 'university'
+    ).all()
+
     return render(request, 'course_session.html', {
         'courses': courses,
-        'universities': universities
+        'universities': universities,
+        'sessions':sessions,
     })
 
 def save_course_session(request):

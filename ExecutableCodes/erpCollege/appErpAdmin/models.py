@@ -92,8 +92,9 @@ class CourseSessions(models.Model):
     )
 
     def save(self, *args, **kwargs):
-        self.complete_name = f"{self.course.course_name}_{self.university.university_name}_{self.start_year}-{self.end_year}"
-        super().save(*args, **kwargs)
+        if self.course_id and self.university_id:
+            self.complete_name = f"{self.course.course_name}_{self.university.university_name}_{self.start_year}-{self.end_year}"
+            super().save(*args, **kwargs)
 
     def __str__(self):
         return self.complete_name

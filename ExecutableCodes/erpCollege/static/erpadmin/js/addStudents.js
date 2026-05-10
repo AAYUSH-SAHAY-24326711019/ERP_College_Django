@@ -1,54 +1,60 @@
-// addStudents.js
-
-$(document).ready(function () {
+$(function () {
 
     // ==========================
-    // CSRF TOKEN
+    // CSRF
     // ==========================
-
     function getCSRFToken() {
-
-        return document.querySelector(
-            '[name=csrfmiddlewaretoken]'
-        ).value;
-
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
     }
 
+    // ==========================
+    // AJAX WRAPPER (IMPORTANT)
+    // ==========================
+    function ajaxRequest(options) {
+        return $.ajax({
+            headers: {
+                "X-CSRFToken": getCSRFToken()
+            },
+            contentType: "application/json",
+            dataType: "json",
+            ...options
+        });
+    }
 
     // ==========================
-    // LIVE STUDENT FETCH
+    // STUDENT PREVIEW (LIVE)
     // ==========================
-
     $("#student_ids").on("keyup", function () {
 
         let studentIds = $(this).val().trim();
 
-        // remove old preview
         $(".student-preview-wrapper").remove();
 
-        if (studentIds.length === 0) {
-            return;
-        }
+        if (!studentIds) return;
 
-        $.ajax({
-
+        ajaxRequest({
             url: "/erpadmin/get-students-preview/",
-
             method: "POST",
+            data: JSON.stringify({ student_ids: studentIds }),
 
-            headers: {
-                "X-CSRFToken": getCSRFToken()
-            },
+            success: function (res) {
 
-            data: JSON.stringify({
-                student_ids: studentIds
-            }),
+                let rows = "";
 
-            contentType: "application/json",
+                if (res.students?.length) {
+                    res.students.forEach(s => {
+                        rows += `
+                            <tr>
+                                <td>${s.student_id}</td>
+                                <td>${s.name}</td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    rows = `<tr><td colspan="2">No Students Found</td></tr>`;
+                }
 
-            success: function (response) {
-
-                let html = `
+                const html = `
                     <div class="student-preview-wrapper">
                         <table class="preview-table">
                             <thead>
@@ -57,135 +63,87 @@ $(document).ready(function () {
                                     <th>Name</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                `;
-
-                if (response.students.length > 0) {
-
-                    response.students.forEach(student => {
-
-                        html += `
-                            <tr>
-                                <td>${student.student_id}</td>
-                                <td>${student.name}</td>
-                            </tr>
-                        `;
-
-                    });
-
-                } else {
-
-                    html += `
-                        <tr>
-                            <td colspan="2">
-                                No Students Found
-                            </td>
-                        </tr>
-                    `;
-
-                }
-
-                html += `
-                            </tbody>
+                            <tbody>${rows}</tbody>
                         </table>
                     </div>
                 `;
 
                 $("#addStudentsForm").after(html);
-
             }
-
         });
-
     });
-
 
     // ==========================
     // ADD STUDENTS
     // ==========================
-
-    $("#addStudentsForm").submit(function (e) {
+    $("#addStudentsForm").on("submit", function (e) {
 
         e.preventDefault();
 
-        let student_ids = $("#student_ids").val();
-
-        let course_id = $("#course_id").val();
-
-        $.ajax({
-
+        ajaxRequest({
             url: "/erpadmin/add-students-to-course/",
-
             method: "POST",
-
-            headers: {
-                "X-CSRFToken": getCSRFToken()
-            },
-
             data: JSON.stringify({
-
-                student_ids: student_ids,
-                course_id: course_id
-
+                student_ids: $("#student_ids").val(),
+                course_id: $("#course_id").val()
             }),
 
-            contentType: "application/json",
+            success: function (res) {
 
-            success: function (response) {
+                alert(res.message);
 
-                alert(response.message);
-
-                loadCourseStudents(course_id);
+                loadCourseStudents($("#course_id").val());
 
                 $("#student_ids").val("");
-
                 $(".student-preview-wrapper").remove();
-
             }
-
         });
-
     });
 
-
     // ==========================
-    // COURSE TAB CLICK
+    // TAB CLICK (DELEGATED)
     // ==========================
-
-    $(".course-tab").click(function () {
+    $(document).on("click", ".course-tab", function () {
 
         $(".course-tab").removeClass("active");
-
         $(this).addClass("active");
 
-        let courseId = $(this).data("course");
-
-        loadCourseStudents(courseId);
-
+        loadCourseStudents($(this).data("course"));
     });
 
-
     // ==========================
-    // LOAD COURSE STUDENTS
+    // LOAD STUDENTS
     // ==========================
-
     function loadCourseStudents(courseId) {
 
-        $.ajax({
-
+        ajaxRequest({
             url: `/erpadmin/course-students/${courseId}/`,
-
             method: "GET",
 
-            success: function (response) {
+            success: function (res) {
 
-                let html = `
+                let rows = "";
+
+                if (res.students?.length) {
+                    res.students.forEach(s => {
+                        rows += `
+                            <tr>
+                                <td>${s.id}</td>
+                                <td>${s.student_id}</td>
+                                <td>${s.name}</td>
+                                <td>${s.email}</td>
+                                <td>${s.date_created}</td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    rows = `<tr><td colspan="5">No Students Added</td></tr>`;
+                }
+
+                $("#courseStudentsContainer").html(`
                     <div class="students-table-wrapper">
-
                         <table class="students-table">
-
                             <thead>
-
                                 <tr>
                                     <th>ID</th>
                                     <th>Student ID</th>
@@ -193,67 +151,22 @@ $(document).ready(function () {
                                     <th>Email</th>
                                     <th>Added On</th>
                                 </tr>
-
                             </thead>
-
-                            <tbody>
-                `;
-
-                if (response.students.length > 0) {
-
-                    response.students.forEach(student => {
-
-                        html += `
-                            <tr>
-                                <td>${student.id}</td>
-                                <td>${student.student_id}</td>
-                                <td>${student.name}</td>
-                                <td>${student.email}</td>
-                                <td>${student.date_created}</td>
-                            </tr>
-                        `;
-
-                    });
-
-                } else {
-
-                    html += `
-                        <tr>
-                            <td colspan="5">
-                                No Students Added
-                            </td>
-                        </tr>
-                    `;
-
-                }
-
-                html += `
-                            </tbody>
-
+                            <tbody>${rows}</tbody>
                         </table>
-
                     </div>
-                `;
-
-                $("#courseStudentsContainer").html(html);
-
+                `);
             }
-
         });
-
     }
-
 
     // ==========================
     // AUTO LOAD FIRST TAB
     // ==========================
+    const first = $(".course-tab.active").data("course");
 
-    let firstCourse = $(".course-tab.active").data("course");
-
-    if (firstCourse) {
-
-        loadCourseStudents(firstCourse);
-
+    if (first) {
+        loadCourseStudents(first);
     }
 
 });

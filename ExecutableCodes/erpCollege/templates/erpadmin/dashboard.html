@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+{% load static %}
 
 <head>
     <meta charset="UTF-8" />
@@ -642,65 +643,80 @@
                         {% include 'erpadmin/course_session.html' %}
                     </div>
 
-                    
-                        {% load static %}
 
-                        <link rel="stylesheet" href="{% static 'erpadmin/css/addStudents.css' %}">
 
-                        <div class="page" id="pageD">
-                            {% csrf_token %}
-                            <h2>Add Students To Courses</h2>
-                            <!-- One Line Form -->
-                            <div class="course-add-wrapper">
 
-                                <form id="addStudentsForm">
+                    <link rel="stylesheet" href="{% static 'erpadmin/css/addStudents.css' %}">
 
-                                    <input type="text" id="student_ids"
-                                        placeholder="Enter Student IDs (Example: 1,2,3,4)" required>
+                    <div class="page" id="pageD">
+                        {% csrf_token %}
+                        <h2>Add Students To Courses</h2>
+                        <!-- One Line Form -->
+                        <div class="course-add-wrapper">
 
-                                    <select id="course_id" required>
-                                        <option value="">Select Course</option>
+                            <form id="addStudentsForm">
 
-                                        <!-- Django Loop -->
-                                        {% for course in courses %}
-                                        <option value="{{ course.id }}">
-                                            {{ course.complete_name }}
-                                        </option>
-                                        {% endfor %}
-                                    </select>
+                                <input type="text" id="student_ids" placeholder="Enter Student IDs (Example: 1,2,3,4)"
+                                    required>
 
-                                    <button type="submit">
-                                        Add Students
-                                    </button>
+                                <select id="course_id" required>
+                                    <option value="">Select Course</option>
 
-                                </form>
+                                    <!-- Django Loop -->
+                                    {% for course in courses %}
+                                    <option value="{{ course.course_id }}">
+                                        {{ course.course_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
 
-                            </div>
+                                <button type="submit">
+                                    Add Students
+                                </button>
 
-                            <!-- Horizontal Course Tabs -->
-                            <div class="course-tabs">
+                            </form>
 
-                                {% for course in courses %}
+                        </div>
+
+                        <!-- Horizontal Course Tabs -->
+                        <!-- <div class="course-tabs">
+
+                                {% for session in courses %}
 
                                 <button class="course-tab {% if forloop.first %}active{% endif %}"
-                                    data-course="{{ course.id }}">
-                                    {{ course.complete_name }}
+                                    data-course="{{session.id }}">
+                                    {{ session.complete_name }}
                                 </button>
 
                                 {% endfor %}
 
-                            </div>
+                            </div> -->
 
-                            <!-- AJAX Loaded Students -->
-                            <div id="courseStudentsContainer">
+                        <div class="course-tabs">
 
-                                <!-- Dynamic Table Here -->
+                            {% for session in sessions %}
 
-                            </div>
+                            <button class="course-tab {% if forloop.first %}active{% endif %}"
+                                data-course="{{ session.id }}">
+
+                                {{ session.complete_name }}
+
+                            </button>
+
+                            {% endfor %}
+
                         </div>
 
-                        <script src="{% static 'erpadmin/js/addStudents.js' %}"></script>
-                    
+                        <!-- AJAX Loaded Students -->
+                        <div id="courseStudentsContainer">
+
+                            <!-- Dynamic Table Here -->
+
+                        </div>
+                    </div>
+
+                    <script src="{% static 'erpadmin/js/addStudents.js' %}"></script>
+
 
 
 
