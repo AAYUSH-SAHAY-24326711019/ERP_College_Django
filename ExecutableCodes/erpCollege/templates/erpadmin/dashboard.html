@@ -529,10 +529,10 @@
                 </div>
 
                 <div class="logout-btn">
-                    <form method="POST" action="{% url 'faculty_logout'%}">
+                    <form method="POST" action="{% url 'admin_logout'%}">
                         {% csrf_token %}
 
-                        <input type="hidden" name="faculty_id" value="{{ faculty.faculty_id }}" />
+                        <!-- <input type="hidden" name="faculty_id" value="{{ faculty.faculty_id }}" /> -->
                         <button type="submit">Logout</button>
                     </form>
                 </div>
@@ -564,7 +564,7 @@
           ========================== -->
                     <div class="page" id="pageB">
                         <h2>Main Site</h2>
-                        <div class="page" id="pageB">
+                        
 
                             <div class="topBar">
 
@@ -648,7 +648,7 @@
 
                             </div>
 
-                        </div>
+                        
 
 
                     </div>
@@ -793,7 +793,8 @@
             let year = yearInput.value;
             let month = monthInput.value;
 
-            csvDownloadBtn.href = `/download-mainsite-csv/?year=${year}&month=${month}`;
+            //csvDownloadBtn.href = `/download-mainsite-csv/?year=${year}&month=${month}`;
+            csvDownloadBtn.href = `{% url 'download_mainsite_csv' %}?year=${year}&month=${month}`;
 
         }
 

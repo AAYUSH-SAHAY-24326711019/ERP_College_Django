@@ -12,99 +12,33 @@ from django.http import HttpResponse
 
 
 def admin_login(request):
-
-    # =========================
-    # LOGIN PROCESS
-    # =========================
-
-    if request.method == "POST":
-
+    if request.method=="POST":
         admin_email = request.POST.get('admin_email')
 
         password = request.POST.get('password')
 
         try:
-
             admin = ErpAdmin.objects.get(
-                email=admin_email,
+                email = admin_email,
                 password=password
             )
 
-            # SESSION
-            request.session['admin_id'] = admin.id
-            request.session['admin_name'] = admin.name
-            request.session['admin_role'] = admin.role.role
+            #session
+            request.session['admin_id']=admin.id
+            request.session['admin_name']=admin.name
+            request.session['admin_role']=admin.role.role
 
-            # =========================
-            # DASHBOARD DATA
-            # =========================
-
-            current_date = datetime.now()
-
-            year = current_date.year
-
-            month = current_date.month
-
-            enquiries = MainsiteEnquiryForm.objects.filter(
-                created_at__year=year,
-                created_at__month=month
-            ).order_by('-id')
-
-            months = []
-
-            for i in range(1, 13):
-
-                months.append({
-                    'number': i,
-                    'name': calendar.month_name[i]
-                })
-
-            context = {
-
-                'enquiries': enquiries,
-
-                'months': months,
-
-                'current_month': month,
-
-                'current_year': year
-
-            }
-
-            return render(
-                request,
-                'erpadmin/dashboard.html',
-                context
-            )
-
+            # return redirect('erp_dashboard')
+            return render(request,'erpadmin/dashboard.html')
+        
         except ErpAdmin.DoesNotExist:
-
-            return render(
-                request,
-                'erpadmin/index.html',
-                {
-                    'error': 'Invalid Credentials'
-                }
-            )
-
-
-
-    # =========================
-    # IF NOT LOGGED IN
-    # =========================
-
+            return render(request,'erpadmin/index.html',{'error':'Invalid Credentials'})
+        
+    # till here , below it all 
+    # return render(request,'erpadmin/index.html')
+        
     if 'admin_id' not in request.session:
-
-        return render(
-            request,
-            'erpadmin/index.html'
-        )
-
-
-
-    # =========================
-    # DASHBOARD FILTERING
-    # =========================
+        return render(request, 'erpadmin/index.html')
 
     current_date = datetime.now()
 
@@ -155,15 +89,9 @@ def admin_login(request):
     )
 
 
-
-# ==========================================
-# CSV DOWNLOAD VIEW
-# ==========================================
-
 def download_mainsite_csv(request):
 
     if 'admin_id' not in request.session:
-
         return redirect('admin_login')
 
     current_date = datetime.now()
@@ -216,8 +144,3 @@ def download_mainsite_csv(request):
     return response
 
 
-def admin_logout(request):
-
-    request.session.flush()
-
-    return redirect('admin_login')
