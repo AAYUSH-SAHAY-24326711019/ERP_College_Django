@@ -1,15 +1,17 @@
+import json
+from django.http import HttpResponse,JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render,redirect
 from .models import ErpAdmin
 from appMainsite.models import MainsiteEnquiryForm
+from appStudent.models import Student,StudentCourseEnrollment
+from appErpAdmin.models import CourseSessions
 import csv
 import calendar
 from datetime import datetime
-from django.http import HttpResponse,JsonResponse
 from .models import Courses,University,CourseSessions
 
-from appStudent.models import Student,StudentCourseEnrollment
 
-import json
 # Create your views here.
 
 
@@ -284,6 +286,49 @@ def save_course_session(request):
 
     return JsonResponse({'error': 'Invalid Request'})
 
+
+# ==========================
+# STUDENT PREVIEW AJAX
+# ==========================
+
+def get_students_preview(request):
+
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+
+        student_ids = data.get("student_ids", "")
+
+        ids_list = [
+            x.strip()
+            for x in student_ids.split(",")
+            if x.strip()
+        ]
+
+        students = Student.objects.filter(
+            student_id__in=ids_list
+        )
+
+        student_data = []
+
+        for student in students:
+
+            student_data.append({
+
+                "id": student.id,
+                "student_id": student.student_id,
+                "name": student.name
+
+            })
+
+        return JsonResponse({
+            "students": student_data
+        })
+
+    return JsonResponse({
+        "students": []
+    })
+
 def add_students_to_course(request):
 
     if request.method == "POST":
@@ -293,67 +338,50 @@ def add_students_to_course(request):
         student_ids = data.get("student_ids")
         course_id = data.get("course_id")
 
-        ids = [x.strip() for x in student_ids.split(",")]
+        ids_list = [x.strip() for x in student_ids.split(",")]
 
-        course = CourseSessions.objects.filter(id=course_id).first()
+        try:
 
-        if not course:
+            course = CourseSessions.objects.get(id=course_id)
+
+            added_count = 0
+
+            for sid in ids_list:
+
+                try:
+
+                    student = Student.objects.get(student_id=sid)
+
+                    already_exists = StudentCourseEnrollment.objects.filter(
+                        student=student,
+                        course_session=course
+                    ).exists()
+
+                    if not already_exists:
+
+                        StudentCourseEnrollment.objects.create(
+                            student=student,
+                            course_session=course
+                        )
+
+                        added_count += 1
+
+                except Student.DoesNotExist:
+                    continue
+
             return JsonResponse({
-              "status": "error",
-           "message": f"CourseSession with id {course_id} not found"
+                "status": "success",
+                "message": f"{added_count} students added successfully"
             })
 
-        added = 0
+        except CourseSessions.DoesNotExist:
 
-        for sid in ids:
-
-            try:
-
-                student = Student.objects.get(student_id=sid)
-
-                StudentCourseEnrollment.objects.get_or_create(
-                student=student,
-                course_session=course
-                )
-
-                added += 1
-
-            except:
-                pass
-
-
-        print("COURSE ID RECEIVED:", course_id)
-        print(CourseSessions.objects.all().values())
-        return JsonResponse({
-            "status": "success",
-            "message": f"{added} students added successfully"
-        })
-
-
-
-def course_students_ajax(request, course_id):
-
-    course = CourseSessions.objects.filter(id=course_id).first()
-
-    if not course:
-        return JsonResponse({
-            "students": []
-        })
-
-    students = StudentCourseEnrollment.objects.filter(
-        course_session=course
-    )
-
-    data = []
-
-    for item in students:
-
-        data.append({
-            "student_id": item.student.student_id,
-            "name": item.student.name,
-            "course": item.course_session.complete_name
-        })
+            return JsonResponse({
+                "status": "error",
+                "message": "Course not found"
+            })
 
     return JsonResponse({
-        "students": data
+        "status": "error",
+        "message": "Invalid Request"
     })

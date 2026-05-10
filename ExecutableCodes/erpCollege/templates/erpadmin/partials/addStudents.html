@@ -1,0 +1,58 @@
+  {% load static %}
+
+<link rel="stylesheet"
+href="{% static 'erpadmin/css/addStudents.css' %}">
+
+<div class="page" id="pageD">
+    {% csrf_token %}
+                        <h2>Add Students To Courses</h2>
+                        <!-- One Line Form -->
+                        <div class="course-add-wrapper">
+
+                            <form id="addStudentsForm">
+
+                                <input type="text" id="student_ids" placeholder="Enter Student IDs (Example: 1,2,3,4)"
+                                    required>
+
+                                <select id="course_id" required>
+                                    <option value="">Select Course</option>
+
+                                    <!-- Django Loop -->
+                                    {% for course in courses %}
+                                    <option value="{{ course.id }}">
+                                        {{ course.complete_name }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+
+                                <button type="submit">
+                                    Add Students
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                        <!-- Horizontal Course Tabs -->
+                        <div class="course-tabs">
+
+                            {% for course in courses %}
+
+                            <button class="course-tab {% if forloop.first %}active{% endif %}"
+                                data-course="{{ course.id }}">
+                                {{ course.complete_name }}
+                            </button>
+
+                            {% endfor %}
+
+                        </div>
+
+                        <!-- AJAX Loaded Students -->
+                        <div id="courseStudentsContainer">
+
+                            <!-- Dynamic Table Here -->
+
+                        </div>
+                    </div>
+
+<script src="{% static 'erpadmin/js/addStudents.js' %}"></script>

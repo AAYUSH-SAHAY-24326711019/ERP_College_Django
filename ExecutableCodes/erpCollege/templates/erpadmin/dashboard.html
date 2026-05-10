@@ -412,109 +412,6 @@
         }
 
         /* code for mainsite enquiry form details end */
-
-        /* code for add Students to courses start */
-        #pageD {
-            padding: 20px;
-        }
-
-        /* Form */
-
-        .course-add-wrapper {
-            width: 100%;
-            margin-bottom: 25px;
-        }
-
-        #addStudentsForm {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        #addStudentsForm input,
-        #addStudentsForm select {
-            height: 45px;
-            padding: 0 15px;
-            border: 1px solid #dcdcdc;
-            border-radius: 10px;
-            font-size: 15px;
-            outline: none;
-            min-width: 250px;
-        }
-
-        #addStudentsForm button {
-            height: 45px;
-            padding: 0 25px;
-            border: none;
-            border-radius: 10px;
-            background: #111827;
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        #addStudentsForm button:hover {
-            opacity: 0.9;
-        }
-
-        /* Tabs */
-
-        .course-tabs {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            margin-bottom: 25px;
-            padding-bottom: 5px;
-        }
-
-        .course-tab {
-            border: none;
-            background: #f1f1f1;
-            padding: 10px 20px;
-            border-radius: 30px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: 0.3s;
-            font-weight: 600;
-        }
-
-        .course-tab.active {
-            background: #111827;
-            color: white;
-        }
-
-        /* Table */
-
-        .students-table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        .students-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-        }
-
-        .students-table th {
-            background: #111827;
-            color: white;
-            padding: 14px;
-            text-align: left;
-        }
-
-        .students-table td {
-            padding: 14px;
-            border-bottom: 1px solid #e5e5e5;
-        }
-
-        .students-table tr:hover {
-            background: #fafafa;
-        }
-
-        /* code for add Students to courses end */
     </style>
 </head>
 
@@ -744,58 +641,69 @@
                     <div class="page" id="pageC">
                         {% include 'erpadmin/course_session.html' %}
                     </div>
-                    <!-- --------------------------HOD PANEL -->
 
-                    <div class="page" id="pageD">
-                        <h2>Add Students To Courses</h2>
-                        <!-- One Line Form -->
-                        <div class="course-add-wrapper">
+                    
+                        {% load static %}
 
-                            <form id="addStudentsForm">
+                        <link rel="stylesheet" href="{% static 'erpadmin/css/addStudents.css' %}">
 
-                                <input type="text" id="student_ids" placeholder="Enter Student IDs (Example: 1,2,3,4)"
-                                    required>
+                        <div class="page" id="pageD">
+                            {% csrf_token %}
+                            <h2>Add Students To Courses</h2>
+                            <!-- One Line Form -->
+                            <div class="course-add-wrapper">
 
-                                <select id="course_id" required>
-                                    <option value="">Select Course</option>
+                                <form id="addStudentsForm">
 
-                                    <!-- Django Loop -->
-                                    {% for course in courses %}
-                                    <option value="{{ course.id }}">
-                                        {{ course.complete_name }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
+                                    <input type="text" id="student_ids"
+                                        placeholder="Enter Student IDs (Example: 1,2,3,4)" required>
 
-                                <button type="submit">
-                                    Add Students
+                                    <select id="course_id" required>
+                                        <option value="">Select Course</option>
+
+                                        <!-- Django Loop -->
+                                        {% for course in courses %}
+                                        <option value="{{ course.id }}">
+                                            {{ course.complete_name }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <button type="submit">
+                                        Add Students
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                            <!-- Horizontal Course Tabs -->
+                            <div class="course-tabs">
+
+                                {% for course in courses %}
+
+                                <button class="course-tab {% if forloop.first %}active{% endif %}"
+                                    data-course="{{ course.id }}">
+                                    {{ course.complete_name }}
                                 </button>
 
-                            </form>
+                                {% endfor %}
 
+                            </div>
+
+                            <!-- AJAX Loaded Students -->
+                            <div id="courseStudentsContainer">
+
+                                <!-- Dynamic Table Here -->
+
+                            </div>
                         </div>
 
-                        <!-- Horizontal Course Tabs -->
-                        <div class="course-tabs">
+                        <script src="{% static 'erpadmin/js/addStudents.js' %}"></script>
+                    
 
-                            {% for course in courses %}
 
-                            <button class="course-tab {% if forloop.first %}active{% endif %}"
-                                data-course="{{ course.id }}">
-                                {{ course.complete_name }}
-                            </button>
 
-                            {% endfor %}
-
-                        </div>
-
-                        <!-- AJAX Loaded Students -->
-                        <div id="courseStudentsContainer">
-
-                            <!-- Dynamic Table Here -->
-
-                        </div>
-                    </div>
 
                     <div class="page" id="pageI">
                         <h2>Issue Notices</h2>
@@ -985,136 +893,6 @@
         //script section of mainsite enquiry form data end
 
 
-        //script for the ajax : add students start
-        document.addEventListener("DOMContentLoaded", function () {
-
-            const tabs = document.querySelectorAll(".course-tab");
-            const container = document.getElementById("courseStudentsContainer");
-
-            // Load First Course
-            if (tabs.length > 0) {
-                loadCourseStudents(tabs[0].dataset.course);
-            }
-
-            // Tab Click
-            tabs.forEach(tab => {
-
-                tab.addEventListener("click", function () {
-
-                    tabs.forEach(t => t.classList.remove("active"));
-                    this.classList.add("active");
-
-                    const courseId = this.dataset.course;
-
-                    loadCourseStudents(courseId);
-
-                });
-
-            });
-
-            // Form Submit
-            document.getElementById("addStudentsForm")
-                .addEventListener("submit", function (e) {
-
-                    e.preventDefault();
-
-                    const student_ids = document.getElementById("student_ids").value;
-                    const course_id = document.getElementById("course_id").value;
-
-                    fetch("/erpadmin/ajax/add-students-to-course/", {
-
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRFToken": getCSRFToken()
-                        },
-
-                        body: JSON.stringify({
-                            student_ids: student_ids,
-                            course_id: course_id
-                        })
-
-                    })
-
-                        .then(response => response.json())
-
-                        .then(data => {
-
-                            alert(data.message);
-
-                            loadCourseStudents(course_id);
-
-                            document.getElementById("student_ids").value = "";
-
-                        });
-
-                });
-
-            // Load Students
-            function loadCourseStudents(courseId) {
-
-                fetch(`/erpadmin/ajax/course-students/${courseId}/`)
-
-                    .then(response => response.json())
-
-                    .then(data => {
-
-                        let html = `
-            
-            <div class="students-table-wrapper">
-
-                <table class="students-table">
-
-                    <thead>
-                        <tr>
-                            <th>Student ID</th>
-                            <th>Name</th>
-                            <th>Course</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-            `;
-
-                        data.students.forEach(student => {
-
-                            html += `
-                    <tr>
-                        <td>${student.student_id}</td>
-                        <td>${student.name}</td>
-                        <td>${student.course}</td>
-                    </tr>
-                `;
-
-                        });
-
-                        html += `
-                    </tbody>
-
-                </table>
-
-            </div>
-            `;
-
-                        container.innerHTML = html;
-
-                    });
-
-            }
-
-            // CSRF
-            function getCSRFToken() {
-
-                return document.cookie
-                    .split('; ')
-                    .find(row => row.startsWith('csrftoken='))
-                    ?.split('=')[1];
-
-            }
-
-        });
-        //script for the ajax : add students end
 
     </script>
 </body>
