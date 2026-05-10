@@ -24,7 +24,7 @@ def admin_login(request):
             request.session['admin_role']=admin.role.role
 
             # return redirect('erp_dashboard')
-            return render(request,'erpadmin/success.html')
+            return render(request,'erpadmin/dashboard.html')
         
         except ErpAdmin.DoesNotExist:
             return render(request,'erpadmin/index.html',{'error':'Invalid Credentials'})

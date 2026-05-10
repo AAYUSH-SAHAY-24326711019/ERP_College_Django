@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>College ERP Dashboard</title>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        /* =========================
+       GLOBAL STYLES
+    ========================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #dcdcdc;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* =========================
+       MAIN LAYOUT
+    ========================== */
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* =========================
+       SIDEBAR
+    ========================== */
+        .sidebar {
+            width: 260px;
+            background: #47012e;
+            color: white;
+            transition: 0.3s;
+            overflow: hidden;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 1000;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .logo {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .menu {
+            padding-top: 20px;
+        }
+
+        .menu li {
+            margin: 8px 0;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .menu a:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .menu i {
+            font-size: 20px;
+            min-width: 25px;
+            text-align: center;
+        }
+
+        .sidebar.collapsed .menu-text {
+            display: none;
+        }
+
+        /* =========================
+       MAIN CONTENT
+    ========================== */
+        .main {
+            margin-left: 260px;
+            width: 100%;
+            transition: 0.3s;
+            padding: 20px;
+        }
+
+        .main.expanded {
+            margin-left: 80px;
+        }
+
+
+
+        /* =========================
+       TOPBAR
+    ========================== */
+        .topbar {
+            width: 100%;
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .left-top {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .menu-btn {
+            font-size: 24px;
+            cursor: pointer;
+            color: #02124a;
+        }
+
+        .student-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #02124a;
+        }
+
+        .logout-btn button {
+            font-size: 26px;
+            color: #02124a;
+            cursor: pointer;
+            border-style: none;
+
+        }
+
+        /* =========================
+       CONTENT AREA
+    ========================== */
+        .content {
+            width: 100%;
+            min-height: 500px;
+            background: #ececec;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* STUDENT IMAGE */
+        .student-profile {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #b8c3ea;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+
+        /* =========================
+       PALETTE DIVS
+    ========================== */
+
+        /*
+      Case Study:
+      A -> My Details
+      B -> Routine
+      C -> Attendance
+
+      Default:
+      A = display block
+      B,C = display none
+    */
+
+        .palette {
+            margin-top: 160px;
+        }
+
+        .page {
+            display: none;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .page h2 {
+            margin-bottom: 15px;
+            color: #02124a;
+        }
+
+        .page p {
+            line-height: 1.7;
+            color: #333;
+        }
+
+        /* =========================
+       RESPONSIVE DESIGN
+    ========================== */
+
+        /* TABLETS */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 80px;
+            }
+
+            .sidebar .menu-text {
+                display: none;
+            }
+
+            .main {
+                margin-left: 80px;
+            }
+
+            .main.expanded {
+                margin-left: 260px;
+            }
+
+            .sidebar.open {
+                width: 260px;
+            }
+
+            .sidebar.open .menu-text {
+                display: inline;
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -260px;
+                width: 260px;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .main.expanded {
+                margin-left: 0;
+            }
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .student-title {
+                font-size: 18px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .student-profile {
+                width: 90px;
+                height: 90px;
+            }
+
+            .palette {
+                margin-top: 120px;
+            }
+        }
+
+        /* code for mainsite enquiry form details start */
+        .topBar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .subText {
+            margin-top: -8px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .filtersArea {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filtersArea input {
+            padding: 10px 14px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            outline: none;
+            font-size: 15px;
+            width: 110px;
+        }
+
+        .downloadBtn {
+            padding: 10px 18px;
+            background: #34012c;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .downloadBtn:hover {
+            opacity: 0.9;
+        }
+
+        .monthPagination {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .monthBtn {
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            background: #ececec;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .monthBtn:hover {
+            background: #ddd;
+        }
+
+        .activeMonth {
+            background: #34012c;
+            color: white;
+        }
+
+        .tableWrapper {
+            overflow-x: auto;
+        }
+
+        .enquiryTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .enquiryTable th {
+            background: #34012c;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        .enquiryTable td {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .enquiryTable tr:hover {
+            background: #fafafa;
+        }
+
+        .noData {
+            text-align: center;
+            color: #777;
+            padding: 30px !important;
+        }
+
+        @media(max-width:768px) {
+
+            .topBar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .filtersArea {
+                width: 100%;
+            }
+
+        }
+
+        /* code for mainsite enquiry form details end */
+    </style>
+</head>
+
+<body>
+    <!-- =========================
+       CONTAINER
+  ========================== -->
+    <div class="container">
+        <!-- =========================
+         SIDEBAR
+    ========================== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">College ERP</div>
+
+            <ul class="menu">
+                <!-- LINK 1 -> DIV A -->
+                <li>
+                    <a href="#" onclick="showPage('pageA')">
+                        <i class="fa-solid fa-user"></i>
+                        <span class="menu-text">My Details</span>
+                    </a>
+                </li>
+
+                <!-- LINK 2 -> DIV B -->
+                <li>
+                    <a href="#" onclick="showPage('pageB')">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span class="menu-text">Main Site</span>
+                    </a>
+                </li>
+
+                <!-- LINK 3 -> DIV C -->
+                <li>
+                    <a href="#" onclick="showPage('pageC')">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <span class="menu-text">Attendance</span>
+                    </a>
+                </li>
+
+                <!-- LINK 4 -> DIV D -->
+                <li>
+                    <a href="#" onclick="showPage('pageD')">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <span class="menu-text">Exams Module</span>
+                    </a>
+                </li>
+
+                <!-- LINK 5 -> DIV E -->
+                <li>
+                    <a href="#" onclick="showPage('pageE')">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <span class="menu-text">Salary</span>
+                    </a>
+                </li>
+
+                <!-- LINK 6 -> DIV F -->
+                <li>
+                    <a href="#" onclick="showPage('pageF')">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <span class="menu-text">Notices</span>
+                    </a>
+                </li>
+
+                <!-- LINK 7 -> DIV G -->
+                <li>
+                    <a href="#" onclick="showPage('pageG')">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <span class="menu-text">Contacts</span>
+                    </a>
+                </li>
+                <!-- LINK 8 -> DIV H -->
+                <li>
+                    <a href="#" onclick="showPage('pageH')">
+                        <i class="fa-solid fa-chart-column"></i>
+                        <span class="menu-text">Account Settings</span>
+                    </a>
+                </li>
+
+                {% if faculty.faculty_designation == 'HOD - IT' or faculty.faculty_designation == 'HOD - Management' %}
+                <a href="#" onclick="showPage('pageI')">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span class="menu-text">Issue Notices</span>
+                </a>
+                </li>
+                {% if faculty.faculty_designation == 'HOD - IT'%}
+                <a href="makeSchedulesIT/" onclick="showPage('pageJ')">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span class="menu-text">Create Time Tables</span>
+                </a>
+                </li>
+                {% endif %}
+
+                {% if faculty.faculty_designation == 'HOD - Management'%}
+                <a href="makeSchedulesM/" onclick="showPage('pageJ')">
+                    <i class="fa-solid fa-chart-column"></i>
+                    <span class="menu-text">Create Time Tables</span>
+                </a>
+                </li>
+                {% endif %}
+                {% endif %}
+
+            </ul>
+        </aside>
+
+        <!-- =========================
+         MAIN SECTION
+    ========================== -->
+        <main class="main" id="main">
+            <!-- TOPBAR -->
+            <div class="topbar">
+                <div class="left-top">
+                    <i class="fa-solid fa-bars menu-btn" id="menuBtn"></i>
+
+                    <div class="student-title">Admin Dashboard</div>
+                </div>
+
+                <div class="logout-btn">
+                    <form method="POST" action="{% url 'faculty_logout'%}">
+                        {% csrf_token %}
+
+                        <input type="hidden" name="faculty_id" value="{{ faculty.faculty_id }}" />
+                        <button type="submit">Logout</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="content">
+                <!-- PROFILE -->
+                <div class="student-profile"></div>
+
+                <!-- PALETTE -->
+                <div class="palette">
+                    <!-- =========================
+               DIV A
+               DEFAULT DISPLAY BLOCK
+          ========================== -->
+                    <div class="page active" id="pageA">
+                        <h2>Welcome {{ faculty.faculty_name }}</h2>
+
+                        <p>Faculty ID : {{ faculty.faculty_id }}</p>
+
+                        <p>Designation : {{ faculty.faculty_designation }}</p>
+
+                        <p>Option Selected : {{ faculty.optionselected }}</p>
+                    </div>
+
+                    <!-- =========================
+               DIV B
+          ========================== -->
+                    <div class="page" id="pageB">
+                        <h2>Main Site</h2>
+                        <div class="page" id="pageB">
+
+                            <div class="topBar">
+
+                                <div>
+                                    <h2>Main Site</h2>
+                                    <p class="subText">Monthly Enquiry Records</p>
+                                </div>
+
+                                <div class="filtersArea">
+
+                                    <input type="number" id="yearInput" placeholder="Year" value="{{ current_year }}">
+
+                                    <input type="number" id="monthInput" placeholder="Month" min="1" max="12"
+                                        value="{{ current_month }}">
+
+                                    <a href="{% url 'download_mainsite_csv' %}?year={{ current_year }}&month={{ current_month }}"
+                                        class="downloadBtn" id="csvDownloadBtn">
+                                        Download CSV
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                            <hr>
+
+                            <div class="monthPagination">
+
+                                {% for month in months %}
+
+                                <button class="monthBtn {% if month.number == current_month %}activeMonth{% endif %}"
+                                    data-month="{{ month.number }}">
+                                    {{ month.name }}
+                                </button>
+
+                                {% endfor %}
+
+                            </div>
+
+                            <hr>
+
+                            <div class="tableWrapper">
+
+                                <table class="enquiryTable">
+
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Mobile</th>
+                                            <th>From Place</th>
+                                            <th>Course</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody id="enquiryTableBody">
+
+                                        {% for enquiry in enquiries %}
+
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ enquiry.name }}</td>
+                                            <td>{{ enquiry.mobile }}</td>
+                                            <td>{{ enquiry.from_place }}</td>
+                                            <td>{{ enquiry.course }}</td>
+                                        </tr>
+
+                                        {% empty %}
+
+                                        <tr>
+                                            <td colspan="5" class="noData">
+                                                No records found
+                                            </td>
+                                        </tr>
+
+                                        {% endfor %}
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    <!-- =========================
+               DIV C
+          ========================== -->
+                    <div class="page" id="pageC">
+                        <h2>Attendance</h2>
+
+                        <p>DBMS : 89%</p>
+
+                        <p>Operating Systems : 91%</p>
+
+                        <p>Django Lab : 95%</p>
+                    </div>
+                    <!-- --------------------------HOD PANEL -->
+                    <div class="page" id="pageI">
+                        <h2>Issue Notices</h2>
+                        =
+                    </div>
+
+                    <div class="page" id="pageJ">
+                        <h2>Create Time Tables</h2>
+
+                    </div>
+                    <!-- --------------------------HOD PANEL -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+    <script>
+        /*
+      ============================================
+      SIDEBAR TOGGLE
+      ============================================
+  
+      Desktop:
+      Collapse sidebar
+  
+      Mobile:
+      Open/close sidebar
+      */
+
+        const menuBtn = document.getElementById("menuBtn");
+        const sidebar = document.getElementById("sidebar");
+        const main = document.getElementById("main");
+
+        menuBtn.addEventListener("click", () => {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle("open");
+            } else {
+                sidebar.classList.toggle("collapsed");
+                main.classList.toggle("expanded");
+            }
+        });
+
+        /*
+      ============================================
+      PAGE SWITCHING LOGIC
+      ============================================
+  
+      A -> pageA
+      B -> pageB
+      C -> pageC
+  
+      Default:
+      pageA = display block
+      Others hidden
+      */
+
+        function showPage(pageId) {
+            // get all pages
+            const pages = document.querySelectorAll(".page");
+
+            // hide all pages
+            pages.forEach((page) => {
+                page.classList.remove("active");
+            });
+
+            // show selected page
+            document.getElementById(pageId).classList.add("active");
+
+            /*
+            Auto close sidebar on mobile
+            after clicking a menu item
+          */
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove("open");
+            }
+        }
+
+        //script section of mainsite enquiry form data start
+
+
+
+        const yearInput = document.getElementById('yearInput');
+        const monthInput = document.getElementById('monthInput');
+        const csvDownloadBtn = document.getElementById('csvDownloadBtn');
+
+        function redirectPage(month = null) {
+
+            let year = yearInput.value;
+            let currentMonth = month || monthInput.value;
+
+            window.location.href = `?year=${year}&month=${currentMonth}`;
+        }
+
+        yearInput.addEventListener('input', () => {
+
+            if (yearInput.value.length >= 4) {
+                redirectPage();
+            }
+
+        });
+
+        monthInput.addEventListener('input', () => {
+
+            if (monthInput.value >= 1 && monthInput.value <= 12) {
+                redirectPage();
+            }
+
+        });
+
+        document.querySelectorAll('.monthBtn').forEach(btn => {
+
+            btn.addEventListener('click', () => {
+
+                let month = btn.dataset.month;
+                redirectPage(month);
+
+            });
+
+        });
+
+        function updateCsvLink() {
+
+            let year = yearInput.value;
+            let month = monthInput.value;
+
+            csvDownloadBtn.href = `/download-mainsite-csv/?year=${year}&month=${month}`;
+
+        }
+
+        yearInput.addEventListener('input', updateCsvLink);
+        monthInput.addEventListener('input', updateCsvLink);
+
+        updateCsvLink();
+
+
+
+
+
+        //script section of mainsite enquiry form data end
+
+    </script>
+</body>
+
+</html>
