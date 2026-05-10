@@ -1,0 +1,5 @@
+1 virtualenv projectenv
+
+2 projectenv\Scripts\activate
+
+3 pip install -r pip_dependency.txt
