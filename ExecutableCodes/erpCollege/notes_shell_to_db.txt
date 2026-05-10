@@ -1,0 +1,27 @@
+(projectenv) PS C:\Users\Lenovo\Desktop\ERP_College_Django\ExecutableCodes\erpCollege> python manage.py shell
+23 objects imported automatically (use -v 2 for details).
+
+Ctrl click to launch VS Code Native REPL
+Python 3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 16:37:03) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+
+>>> from appErpAdmin.models import Courses,University 
+>>> courses = ['BCA','BSC-IT','BBA','BCOM','PGDM','MBA','MCA']
+>>> for c in courses:
+...  Courses.objects.get_or_create(course_name=c)
+... 
+(<Courses: BCA>, True)
+(<Courses: BSC-IT>, True)
+(<Courses: BBA>, True)
+(<Courses: BCOM>, True)
+(<Courses: PGDM>, True)
+(<Courses: MBA>, True)
+(<Courses: MCA>, True)
+>>> universities = ['AKU','PPU']
+>>> for u in universities:
+...  University.objects.get_or_create(university_name=u)
+... 
+(<University: AKU>, True)
+(<University: PPU>, True)
+>>> 

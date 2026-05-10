@@ -4,9 +4,12 @@ from appMainsite.models import MainsiteEnquiryForm
 import csv
 import calendar
 from datetime import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
+from .models import Courses,University,CourseSessions
 
+from appStudent.models import Student,StudentCourseEnrollment
 
+import json
 # Create your views here.
 
 
@@ -59,6 +62,9 @@ def admin_login(request):
                     'name': calendar.month_name[i]
                 })
 
+            courses = Courses.objects.all()
+            universities = University.objects.all()
+
             context = {
 
                 'enquiries': enquiries,
@@ -67,7 +73,11 @@ def admin_login(request):
 
                 'current_month': month,
 
-                'current_year': year
+                'current_year': year,
+
+                'courses': courses,
+
+                'universities': universities
 
             }
 
@@ -136,6 +146,8 @@ def admin_login(request):
             'name': calendar.month_name[i]
         })
 
+    courses = Courses.objects.all()
+    universities = University.objects.all()
     context = {
 
         'enquiries': enquiries,
@@ -144,7 +156,11 @@ def admin_login(request):
 
         'current_month': month,
 
-        'current_year': year
+        'current_year': year,
+
+        'courses': courses,
+
+        'universities': universities,
 
     }
 
@@ -229,3 +245,115 @@ def admin_logout(request):
     request.session.flush()
 
     return redirect('admin_login')
+
+def course_session_page(request):
+
+    courses = CourseSessions.objects.all()
+    universities = University.objects.all()
+
+    return render(request, 'course_session.html', {
+        'courses': courses,
+        'universities': universities
+    })
+
+def save_course_session(request):
+
+    if request.method == "POST":
+
+        course_id = request.POST.get('course')
+        university_id = request.POST.get('university')
+        start_year = request.POST.get('start_year')
+        end_year = request.POST.get('end_year')
+
+        course = Courses.objects.get(id=course_id)
+        university = University.objects.get(id=university_id)
+
+        obj = CourseSessions.objects.create(
+            course=course,
+            university=university,
+            start_year=start_year,
+            end_year=end_year
+        )
+
+        data = {
+            'id': obj.id,
+            'complete_name': obj.complete_name
+        }
+
+        return JsonResponse(data)
+
+    return JsonResponse({'error': 'Invalid Request'})
+
+def add_students_to_course(request):
+
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+
+        student_ids = data.get("student_ids")
+        course_id = data.get("course_id")
+
+        ids = [x.strip() for x in student_ids.split(",")]
+
+        course = CourseSessions.objects.filter(id=course_id).first()
+
+        if not course:
+            return JsonResponse({
+              "status": "error",
+           "message": f"CourseSession with id {course_id} not found"
+            })
+
+        added = 0
+
+        for sid in ids:
+
+            try:
+
+                student = Student.objects.get(student_id=sid)
+
+                StudentCourseEnrollment.objects.get_or_create(
+                student=student,
+                course_session=course
+                )
+
+                added += 1
+
+            except:
+                pass
+
+
+        print("COURSE ID RECEIVED:", course_id)
+        print(CourseSessions.objects.all().values())
+        return JsonResponse({
+            "status": "success",
+            "message": f"{added} students added successfully"
+        })
+
+
+
+def course_students_ajax(request, course_id):
+
+    course = CourseSessions.objects.filter(id=course_id).first()
+
+    if not course:
+        return JsonResponse({
+            "students": []
+        })
+
+    students = StudentCourseEnrollment.objects.filter(
+        course_session=course
+    )
+
+    data = []
+
+    for item in students:
+
+        data.append({
+            "student_id": item.student.student_id,
+            "name": item.student.name,
+            "course": item.course_session.complete_name
+        })
+
+    return JsonResponse({
+        "students": data
+    })

@@ -1,4 +1,5 @@
 from django.db import models
+from appErpAdmin.models import CourseSessions
 
 # Create your models here.
 
@@ -35,3 +36,24 @@ class ActivityLogs(models.Model):
 
     def __str__(self):
         return f"{self.student.student_id} - {self.action}"
+    
+class StudentCourseEnrollment(models.Model):
+
+    id = models.AutoField(primary_key=True)
+
+    student = models.ForeignKey(
+        'Student',
+        on_delete=models.CASCADE
+    )
+
+    course_session = models.ForeignKey(
+        CourseSessions,
+        on_delete=models.CASCADE
+    )
+
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+
+        return f"{self.student.student_id} -> {self.course_session.complete_name}"
+

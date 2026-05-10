@@ -1,0 +1,75 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'erpadmin/css/course_session.css' %}">
+
+<div class="course-session-container">
+
+    <form id="courseSessionForm">
+
+        {% csrf_token %}
+
+        <div class="top-form-row">
+
+            <div class="field-box">
+                <label>Select Course</label>
+
+                <select name="course" required>
+                    <option value="">Choose</option>
+
+                    {% for c in courses %}
+                        <option value="{{ c.id }}">
+                            {{ c.course_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="field-box">
+                <label>Select University</label>
+
+                <select name="university" required>
+                    <option value="">Choose</option>
+
+                    {% for u in universities %}
+                        <option value="{{ u.id }}">
+                            {{ u.university_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="field-box">
+                <label>Start Year</label>
+                <input type="number" name="start_year" required>
+            </div>
+
+            <div class="field-box">
+                <label>End Year</label>
+                <input type="number" name="end_year" required>
+            </div>
+
+            <div class="field-box button-box">
+                <button type="submit">
+                    Save
+                </button>
+            </div>
+
+        </div>
+
+    </form>
+
+
+    <div class="session-list">
+
+        <h3>Course Sessions</h3>
+
+        <div id="sessionData">
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="{% static 'erpadmin/js/course_session.js' %}"></script>
