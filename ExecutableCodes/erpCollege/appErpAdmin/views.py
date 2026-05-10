@@ -148,6 +148,14 @@ def admin_login(request):
 
     }
 
+    if request.GET.get('ajax'):
+
+        return render(
+            request,
+            'erpadmin/partials/mainsite_enquiry_rows.html',
+            context
+        )
+
     return render(
         request,
         'erpadmin/dashboard.html',

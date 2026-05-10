@@ -564,91 +564,73 @@
           ========================== -->
                     <div class="page" id="pageB">
                         <h2>Main Site</h2>
-                        
 
-                            <div class="topBar">
 
-                                <div>
-                                    <h2>Main Site</h2>
-                                    <p class="subText">Monthly Enquiry Records</p>
-                                </div>
+                        <div class="topBar">
 
-                                <div class="filtersArea">
+                            <div>
+                                <h2>Main Site</h2>
+                                <p class="subText">Monthly Enquiry Records</p>
+                            </div>
 
-                                    <input type="number" id="yearInput" placeholder="Year" value="{{ current_year }}">
+                            <div class="filtersArea">
 
-                                    <input type="number" id="monthInput" placeholder="Month" min="1" max="12"
-                                        value="{{ current_month }}">
+                                <input type="number" id="yearInput" placeholder="Year" value="{{ current_year }}">
 
-                                    <a href="{% url 'download_mainsite_csv' %}?year={{ current_year }}&month={{ current_month }}"
-                                        class="downloadBtn" id="csvDownloadBtn">
-                                        Download CSV
-                                    </a>
+                                <input type="number" id="monthInput" placeholder="Month" min="1" max="12"
+                                    value="{{ current_month }}">
 
-                                </div>
+                                <a href="{% url 'download_mainsite_csv' %}?year={{ current_year }}&month={{ current_month }}"
+                                    class="downloadBtn" id="csvDownloadBtn">
+                                    Download CSV
+                                </a>
 
                             </div>
 
-                            <hr>
+                        </div>
 
-                            <div class="monthPagination">
+                        <hr>
 
-                                {% for month in months %}
+                        <div class="monthPagination">
 
-                                <button class="monthBtn {% if month.number == current_month %}activeMonth{% endif %}"
-                                    data-month="{{ month.number }}">
-                                    {{ month.name }}
-                                </button>
+                            {% for month in months %}
 
-                                {% endfor %}
+                            <button class="monthBtn {% if month.number == current_month %}activeMonth{% endif %}"
+                                data-month="{{ month.number }}">
+                                {{ month.name }}
+                            </button>
 
-                            </div>
+                            {% endfor %}
 
-                            <hr>
+                        </div>
 
-                            <div class="tableWrapper">
+                        <hr>
 
-                                <table class="enquiryTable">
+                        <div class="tableWrapper">
 
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Mobile</th>
-                                            <th>From Place</th>
-                                            <th>Course</th>
-                                        </tr>
-                                    </thead>
+                            <table class="enquiryTable">
 
-                                    <tbody id="enquiryTableBody">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Mobile</th>
+                                        <th>From Place</th>
+                                        <th>Course</th>
+                                    </tr>
+                                </thead>
 
-                                        {% for enquiry in enquiries %}
+                                <tbody id="enquiryTableBody">
 
-                                        <tr>
-                                            <td>{{ forloop.counter }}</td>
-                                            <td>{{ enquiry.name }}</td>
-                                            <td>{{ enquiry.mobile }}</td>
-                                            <td>{{ enquiry.from_place }}</td>
-                                            <td>{{ enquiry.course }}</td>
-                                        </tr>
+                                    {% include 'erpadmin/partials/mainsite_enquiry_rows.html' %}
 
-                                        {% empty %}
+                                </tbody>
 
-                                        <tr>
-                                            <td colspan="5" class="noData">
-                                                No records found
-                                            </td>
-                                        </tr>
+                            </table>
 
-                                        {% endfor %}
+                        </div>
 
-                                    </tbody>
 
-                                </table>
-
-                            </div>
-
-                        
 
 
                     </div>
@@ -746,66 +728,110 @@
         }
 
         //script section of mainsite enquiry form data start
-
-
-
         const yearInput = document.getElementById('yearInput');
         const monthInput = document.getElementById('monthInput');
         const csvDownloadBtn = document.getElementById('csvDownloadBtn');
 
-        function redirectPage(month = null) {
+
+
+        function updateCsvLink() {
 
             let year = yearInput.value;
-            let currentMonth = month || monthInput.value;
 
-            window.location.href = `?year=${year}&month=${currentMonth}`;
+            let month = monthInput.value;
+
+            csvDownloadBtn.href =
+                `{% url 'download_mainsite_csv' %}?year=${year}&month=${month}`;
+
         }
+
+
+
+        function loadEnquiries(month = null) {
+
+            let year = yearInput.value;
+
+            let selectedMonth = month || monthInput.value;
+
+            fetch(
+                `/erpadmin/?year=${year}&month=${selectedMonth}&ajax=1`
+            )
+
+                .then(response => response.text())
+
+                .then(data => {
+
+                    document.getElementById(
+                        'enquiryTableBody'
+                    ).innerHTML = data;
+
+                    monthInput.value = selectedMonth;
+
+                    updateCsvLink();
+
+                    updateActiveMonth(selectedMonth);
+
+                });
+
+        }
+
+
+
+        function updateActiveMonth(activeMonth) {
+
+            document.querySelectorAll('.monthBtn').forEach(btn => {
+
+                btn.classList.remove('activeMonth');
+
+                if (btn.dataset.month == activeMonth) {
+
+                    btn.classList.add('activeMonth');
+
+                }
+
+            });
+
+        }
+
+
 
         yearInput.addEventListener('input', () => {
 
             if (yearInput.value.length >= 4) {
-                redirectPage();
+
+                loadEnquiries();
+
             }
 
         });
+
+
 
         monthInput.addEventListener('input', () => {
 
             if (monthInput.value >= 1 && monthInput.value <= 12) {
-                redirectPage();
+
+                loadEnquiries();
+
             }
 
         });
+
+
 
         document.querySelectorAll('.monthBtn').forEach(btn => {
 
             btn.addEventListener('click', () => {
 
-                let month = btn.dataset.month;
-                redirectPage(month);
+                loadEnquiries(btn.dataset.month);
 
             });
 
         });
 
-        function updateCsvLink() {
 
-            let year = yearInput.value;
-            let month = monthInput.value;
-
-            //csvDownloadBtn.href = `/download-mainsite-csv/?year=${year}&month=${month}`;
-            csvDownloadBtn.href = `{% url 'download_mainsite_csv' %}?year=${year}&month=${month}`;
-
-        }
-
-        yearInput.addEventListener('input', updateCsvLink);
-        monthInput.addEventListener('input', updateCsvLink);
 
         updateCsvLink();
-
-
-
-
 
         //script section of mainsite enquiry form data end
 

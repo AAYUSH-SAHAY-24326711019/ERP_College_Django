@@ -1,0 +1,19 @@
+{% for enquiry in enquiries %}
+
+<tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ enquiry.name }}</td>
+    <td>{{ enquiry.mobile }}</td>
+    <td>{{ enquiry.from_place }}</td>
+    <td>{{ enquiry.course }}</td>
+</tr>
+
+{% empty %}
+
+<tr>
+    <td colspan="5" class="noData">
+        No records found
+    </td>
+</tr>
+
+{% endfor %}
