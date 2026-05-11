@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render,redirect
 from .models import ErpAdmin
 from appMainsite.models import MainsiteEnquiryForm
-from appStudent.models import Student,StudentCourseEnrollment
+from appStudent.models import Student
 from appErpAdmin.models import Courses,University,CourseSessions
 import csv
 import calendar
@@ -296,7 +296,13 @@ def save_course_session(request):
     return JsonResponse({'error': 'Invalid Request'})
 
 
+from .models import CourseSessions
 
+def showRecords(request):
+    records = CourseSessions.objects.all()
+
+    return render(request,'erpadmin/student_enrollment.html',
+                  {'records':records})
 
 
 
