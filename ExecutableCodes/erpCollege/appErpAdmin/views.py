@@ -296,71 +296,8 @@ def save_course_session(request):
     return JsonResponse({'error': 'Invalid Request'})
 
 
-def student_enrollment_page(request):
-
-    courses = Courses.objects.all()
-    sessions = CourseSessions.objects.all()
-    print(sessions)
-
-    # group manually in template OR pass structured dict
-    return render(request, "erpadmin/student_enrollment.html", {
-        "courses": courses,
-        "sessions": sessions
-    })
-
-def get_sessions_by_course(request):
-    course_code = request.GET.get("course_code")  # MCA / MBA etc.
-
-    sessions = CourseSessions.objects.filter(
-        complete_name__startswith=course_code
-    ).values("id", "complete_name")
-
-    return JsonResponse(list(sessions), safe=False)
 
 
-@csrf_exempt
-def enroll_students_to_session(request):
-    if request.method == "POST":
 
-        student_ids = request.POST.get("student_ids", "")
-        session_id = request.POST.get("session_id")
 
-        # clean input
-        student_id_list = [
-            s.strip() for s in student_ids.split(",") if s.strip()
-        ]
-
-        session = CourseSessions.objects.get(id=session_id)
-
-        created = 0
-        failed = 0
-
-        for sid in student_id_list:
-            try:
-                student = Student.objects.get(id=sid)
-
-                # avoid duplicates (important in ERP)
-                exists = StudentCourseEnrollment.objects.filter(
-                    student_id=student,
-                    course_session_id=session
-                ).exists()
-
-                if not exists:
-                    StudentCourseEnrollment.objects.create(
-                        student_id=student,
-                        course_session_id=session,
-                        date_created=now()
-                    )
-                    created += 1
-
-            except:
-                failed += 1
-
-        return JsonResponse({
-            "status": "success",
-            "created": created,
-            "failed": failed
-        })
-
-    return JsonResponse({"status": "error"})
 
