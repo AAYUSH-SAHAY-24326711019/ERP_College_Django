@@ -5,7 +5,7 @@ from django.shortcuts import render,redirect
 from .models import ErpAdmin
 from appMainsite.models import MainsiteEnquiryForm
 from appStudent.models import Student
-from appErpAdmin.models import Courses,University,CourseSessions
+from appErpAdmin.models import Courses,University,CourseSessions,StudentEnrollment
 import csv
 import calendar
 from datetime import datetime
@@ -305,5 +305,16 @@ def showRecords(request):
                   {'records':records})
 
 
+def showStudentCourse(request):
+    if request.method =="POST":
+        studentid = request.POST.get("student_id")
+        courseid = request.POST.get("course_id")
+
+        student_obj = Student.objects.get(id=studentid)
+        course_obj = CourseSessions.objects.get(id=courseid)
+
+        StudentEnrollment.objects.create(student=student_obj,course=course_obj)
+
+        return redirect('/')
 
 

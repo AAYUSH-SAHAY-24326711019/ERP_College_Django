@@ -42,5 +42,6 @@ urlpatterns = [
         name='save_course_session'
     ),
 
+    path('',views.showStudentCourse,name='showStudentCourse'),
 
 ]

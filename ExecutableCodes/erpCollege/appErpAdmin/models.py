@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 class AdminRoles(models.Model):
@@ -98,3 +99,8 @@ class CourseSessions(models.Model):
 
     def __str__(self):
         return self.complete_name
+    
+
+class StudentEnrollment(models.Model):
+    student = models.ForeignKey('appStudent.Student',on_delete=models.CASCADE)
+    course = models.ForeignKey('appErpAdmin.CourseSessions',on_delete=models.CASCADE)

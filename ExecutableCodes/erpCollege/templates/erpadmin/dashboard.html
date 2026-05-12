@@ -651,7 +651,13 @@
                     <div class="page" id="pageD">
 
                         <h2>Add Students To Courses</h2>
-                         
+                         <form method="post">
+                            {%csrf_token%}
+                            <input type="number" name="student_id" placeholder="student id" required>
+                            <input type="number" name="course_id" placeholder="course id" required>
+
+                            <button type="submit">Submit</button>
+                         </form>
 
 
                     </div>

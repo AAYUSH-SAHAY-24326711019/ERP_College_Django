@@ -1,0 +1,4 @@
+>>> from appErpAdmin.models import CourseSessions,Courses,University
+>>> course_obj = Courses.objects.get(id=3)
+>>> univ_obj = University.objects.get(id=1)
+>>> obj = CourseSessions.objects.create(course=course_obj,university=univ_obj,start_year=2026,end_year=2029) 
