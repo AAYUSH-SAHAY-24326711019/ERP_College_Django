@@ -314,8 +314,12 @@ def showStudentCourse(request):
         course_obj = CourseSessions.objects.get(id=courseid)
 
         StudentEnrollment.objects.create(student=student_obj,course=course_obj)
+        data=StudentEnrollment.objects.all()
+        context1={
+            'data':data
+        }
 
-        return render(request, 'erpadmin/success.html')
+        return render(request, 'erpadmin/success.html',context1)
 
     return redirect('dashboard')
 
