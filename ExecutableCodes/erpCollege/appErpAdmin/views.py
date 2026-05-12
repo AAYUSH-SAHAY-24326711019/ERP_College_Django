@@ -315,6 +315,7 @@ def showStudentCourse(request):
 
         StudentEnrollment.objects.create(student=student_obj,course=course_obj)
 
-        return redirect('/')
+        return render(request, 'erpadmin/success.html')
 
+    return redirect('dashboard')
 
