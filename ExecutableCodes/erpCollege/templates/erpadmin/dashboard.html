@@ -646,18 +646,25 @@
 
 
 
-                    
+
 
                     <div class="page" id="pageD">
 
                         <h2>Add Students To Courses</h2>
-                         <form method="post" action="{% url 'showStudentCourse' %}">
+                        <form method="post" action="{% url 'showStudentCourse' %}">
                             {%csrf_token%}
-                            <input type="number" name="student_id" placeholder="student id" required>
-                            <input type="number" name="course_id" placeholder="course id" required>
+                            <input type="text" name="student_id" placeholder="student id" required>
+                            <!-- <input type="number" name="course_id" placeholder="course id" required> -->
+
+                            <select name="course_id" id="">
+                                <option value="">-- Select Course --</option>
+                                {%for x in current_courses%}
+                                <option value="{{x.id}}">{{x.complete_name}}</option>
+                                {%endfor%}
+                            </select>
 
                             <button type="submit">Submit</button>
-                         </form>
+                        </form>
 
 
                     </div>
@@ -722,7 +729,7 @@
     <!-- =========================
        JAVASCRIPT
   ========================== -->
-   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
         /*
       ============================================
@@ -893,7 +900,7 @@
         //script section of mainsite enquiry form data end
 
 
-       </script>
+    </script>
 
 </body>
 

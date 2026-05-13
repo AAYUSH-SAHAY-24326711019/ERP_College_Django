@@ -21,6 +21,7 @@ from django.utils.timezone import now
 
 
 def admin_login(request):
+    
 
     # =========================
     # LOGIN PROCESS
@@ -70,7 +71,8 @@ def admin_login(request):
 
             courses = Courses.objects.all()
             universities = University.objects.all()
-
+            current_courses = CourseSessions.objects.all()
+            
             context = {
 
                 'enquiries': enquiries,
@@ -83,7 +85,9 @@ def admin_login(request):
 
                 'courses': courses,
 
-                'universities': universities
+                'universities': universities,
+
+                'current_courses':current_courses,
 
             }
 
@@ -305,15 +309,22 @@ def showRecords(request):
                   {'records':records})
 
 
+# def seeCurrentCourses(request):
+    
+
 def showStudentCourse(request):
+
     if request.method =="POST":
         studentid = request.POST.get("student_id")
+        id_list = [int(x.strip()) for x in studentid.split(",")]
         courseid = request.POST.get("course_id")
 
-        student_obj = Student.objects.get(id=studentid)
-        course_obj = CourseSessions.objects.get(id=courseid)
-
-        StudentEnrollment.objects.create(student=student_obj,course=course_obj)
+        for i in id_list:
+            x=courseid
+            student_obj = Student.objects.get(id=i)
+            course_obj = CourseSessions.objects.get(id=x)
+            StudentEnrollment.objects.create(student=student_obj,course=course_obj)
+        
         data=StudentEnrollment.objects.all()
         context1={
             'data':data
@@ -322,4 +333,6 @@ def showStudentCourse(request):
         return render(request, 'erpadmin/success.html',context1)
 
     return redirect('dashboard')
+
+
 
