@@ -1,196 +1,194 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>College ERP Dashboard</title>
 
-    <!-- FONT AWESOME -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-    />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>College ERP Dashboard</title>
 
-    <style>
-      /* =========================
+  <!-- FONT AWESOME -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    /* =========================
        GLOBAL STYLES
     ========================== */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: Arial, Helvetica, sans-serif;
-      }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-      body {
-        background: #dcdcdc;
-        min-height: 100vh;
-      }
+    body {
+      background: #dcdcdc;
+      min-height: 100vh;
+    }
 
-      a {
-        text-decoration: none;
-        color: white;
-      }
+    a {
+      text-decoration: none;
+      color: white;
+    }
 
-      ul {
-        list-style: none;
-      }
+    ul {
+      list-style: none;
+    }
 
-      /* =========================
+    /* =========================
        MAIN LAYOUT
     ========================== */
-      .container {
-        width: 100%;
-        min-height: 100vh;
-        display: flex;
-      }
+    .container {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+    }
 
-      /* =========================
+    /* =========================
        SIDEBAR
     ========================== */
-      .sidebar {
-        width: 260px;
-        background: #b06635;
-        color: white;
-        transition: 0.3s;
-        overflow: hidden;
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        z-index: 1000;
-      }
+    .sidebar {
+      width: 260px;
+      background: #b06635;
+      color: white;
+      transition: 0.3s;
+      overflow: hidden;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 1000;
+    }
 
-      .sidebar.collapsed {
-        width: 80px;
-      }
+    .sidebar.collapsed {
+      width: 80px;
+    }
 
-      .logo {
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        font-weight: bold;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      }
+    .logo {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
 
-      .menu {
-        padding-top: 20px;
-      }
+    .menu {
+      padding-top: 20px;
+    }
 
-      .menu li {
-        margin: 8px 0;
-      }
+    .menu li {
+      margin: 8px 0;
+    }
 
-      .menu a {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        padding: 15px 20px;
-        transition: 0.3s;
-        white-space: nowrap;
-      }
+    .menu a {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      transition: 0.3s;
+      white-space: nowrap;
+    }
 
-      .menu a:hover {
-        background: rgba(255, 255, 255, 0.15);
-      }
+    .menu a:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
 
-      .menu i {
-        font-size: 20px;
-        min-width: 25px;
-        text-align: center;
-      }
+    .menu i {
+      font-size: 20px;
+      min-width: 25px;
+      text-align: center;
+    }
 
-      .sidebar.collapsed .menu-text {
-        display: none;
-      }
+    .sidebar.collapsed .menu-text {
+      display: none;
+    }
 
-      /* =========================
+    /* =========================
        MAIN CONTENT
     ========================== */
-      .main {
-        margin-left: 260px;
-        width: 100%;
-        transition: 0.3s;
-        padding: 20px;
-      }
+    .main {
+      margin-left: 260px;
+      width: 100%;
+      transition: 0.3s;
+      padding: 20px;
+    }
 
-      .main.expanded {
-        margin-left: 80px;
-      }
+    .main.expanded {
+      margin-left: 80px;
+    }
 
-      
 
-      /* =========================
+
+    /* =========================
        TOPBAR
     ========================== */
-      .topbar {
-        width: 100%;
-        height: 70px;
-        background: white;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-      }
+    .topbar {
+      width: 100%;
+      height: 70px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
 
-      .left-top {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-      }
+    .left-top {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
 
-      .menu-btn {
-        font-size: 24px;
-        cursor: pointer;
-        color: #02124a;
-      }
+    .menu-btn {
+      font-size: 24px;
+      cursor: pointer;
+      color: #02124a;
+    }
 
-      .student-title {
-        font-size: 22px;
-        font-weight: bold;
-        color: #02124a;
-      }
+    .student-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #02124a;
+    }
 
-      .logout-btn button {
-        font-size: 26px;
-        color: #02124a;
-        cursor: pointer;
-        border-style: none;
-        
-      }
+    .logout-btn button {
+      font-size: 26px;
+      color: #02124a;
+      cursor: pointer;
+      border-style: none;
 
-      /* =========================
+    }
+
+    /* =========================
        CONTENT AREA
     ========================== */
-      .content {
-        width: 100%;
-        min-height: 500px;
-        background: #ececec;
-        border-radius: 10px;
-        padding: 20px;
-        position: relative;
-      }
+    .content {
+      width: 100%;
+      min-height: 500px;
+      background: #ececec;
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+    }
 
-      /* STUDENT IMAGE */
-      .student-profile {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: #b8c3ea;
-        position: absolute;
-        right: 20px;
-        top: 20px;
-      }
+    /* STUDENT IMAGE */
+    .student-profile {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: #b8c3ea;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
 
-      /* =========================
+    /* =========================
        PALETTE DIVS
     ========================== */
 
-      /*
+    /*
       Case Study:
       A -> My Details
       B -> Routine
@@ -201,357 +199,401 @@
       B,C = display none
     */
 
-      .palette {
-        margin-top: 160px;
-      }
+    .palette {
+      margin-top: 160px;
+    }
 
-      .page {
-        display: none;
-        padding: 20px;
-        background: white;
-        border-radius: 10px;
-      }
+    .page {
+      display: none;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+    }
 
-      .page.active {
-        display: block;
-      }
+    .page.active {
+      display: block;
+    }
 
-      .page h2 {
-        margin-bottom: 15px;
-        color: #02124a;
-      }
+    .page h2 {
+      margin-bottom: 15px;
+      color: #02124a;
+    }
 
-      .page p {
-        line-height: 1.7;
-        color: #333;
-      }
+    .page p {
+      line-height: 1.7;
+      color: #333;
+    }
 
-      /* =========================
+    /* =========================
        RESPONSIVE DESIGN
     ========================== */
 
-      /* TABLETS */
-      @media (max-width: 992px) {
-        .sidebar {
-          width: 80px;
-        }
-
-        .sidebar .menu-text {
-          display: none;
-        }
-
-        .main {
-          margin-left: 80px;
-        }
-
-        .main.expanded {
-          margin-left: 260px;
-        }
-
-        .sidebar.open {
-          width: 260px;
-        }
-
-        .sidebar.open .menu-text {
-          display: inline;
-        }
+    /* TABLETS */
+    @media (max-width: 992px) {
+      .sidebar {
+        width: 80px;
       }
 
-      /* MOBILE */
-      @media (max-width: 768px) {
-        .sidebar {
-          left: -260px;
-          width: 260px;
-        }
-
-        .sidebar.open {
-          left: 0;
-        }
-
-        .main {
-          margin-left: 0;
-        }
-
-        .main.expanded {
-          margin-left: 0;
-        }
-
-        .topbar {
-          padding: 0 15px;
-        }
-
-        .student-title {
-          font-size: 18px;
-        }
-
-        .content {
-          padding: 15px;
-        }
-
-        .student-profile {
-          width: 90px;
-          height: 90px;
-        }
-
-        .palette {
-          margin-top: 120px;
-        }
+      .sidebar .menu-text {
+        display: none;
       }
-    </style>
-  </head>
 
-  <body>
-    <!-- =========================
+      .main {
+        margin-left: 80px;
+      }
+
+      .main.expanded {
+        margin-left: 260px;
+      }
+
+      .sidebar.open {
+        width: 260px;
+      }
+
+      .sidebar.open .menu-text {
+        display: inline;
+      }
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .sidebar {
+        left: -260px;
+        width: 260px;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .main.expanded {
+        margin-left: 0;
+      }
+
+      .topbar {
+        padding: 0 15px;
+      }
+
+      .student-title {
+        font-size: 18px;
+      }
+
+      .content {
+        padding: 15px;
+      }
+
+      .student-profile {
+        width: 90px;
+        height: 90px;
+      }
+
+      .palette {
+        margin-top: 120px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- =========================
        CONTAINER
   ========================== -->
-    <div class="container">
-      <!-- =========================
+  <div class="container">
+    <!-- =========================
          SIDEBAR
     ========================== -->
-      <aside class="sidebar" id="sidebar">
-        <div class="logo">College ERP</div>
+    <aside class="sidebar" id="sidebar">
+      <div class="logo">College ERP</div>
 
-        <ul class="menu">
-          <!-- LINK 1 -> DIV A -->
-          <li>
-            <a href="#" onclick="showPage('pageA')">
-              <i class="fa-solid fa-user"></i>
-              <span class="menu-text">My Details</span>
-            </a>
-          </li>
+      <ul class="menu">
+        <!-- LINK 1 -> DIV A -->
+        <li>
+          <a href="#" onclick="showPage('pageA')">
+            <i class="fa-solid fa-user"></i>
+            <span class="menu-text">My Details</span>
+          </a>
+        </li>
 
-          <!-- LINK 2 -> DIV B -->
-          <li>
-            <a href="#" onclick="showPage('pageB')">
-              <i class="fa-solid fa-calendar-days"></i>
-              <span class="menu-text">My Classes</span>
-            </a>
-          </li>
+        <!-- LINK 2 -> DIV B -->
+        <li>
+          <a href="#" onclick="showPage('pageB')">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span class="menu-text">My Classes</span>
+          </a>
+        </li>
 
-          <!-- LINK 3 -> DIV C -->
-          <li>
-            <a href="#" onclick="showPage('pageC')">
-              <i class="fa-solid fa-chart-column"></i>
-              <span class="menu-text">Attendance</span>
-            </a>
-          </li>
+        <!-- LINK 3 -> DIV C -->
+        <li>
+          <a href="#" onclick="showPage('pageC')">
+            <i class="fa-solid fa-chart-column"></i>
+            <span class="menu-text">Attendance</span>
+          </a>
+        </li>
 
-          <!-- LINK 4 -> DIV D -->
-          <li>
-            <a href="#" onclick="showPage('pageD')">
-              <i class="fa-solid fa-chart-column"></i>
-              <span class="menu-text">Exams Module</span>
-            </a>
-          </li>
+        <!-- LINK 4 -> DIV D -->
+        <li>
+          <a href="#" onclick="showPage('pageD')">
+            <i class="fa-solid fa-chart-column"></i>
+            <span class="menu-text">Exams Module</span>
+          </a>
+        </li>
 
-          <!-- LINK 5 -> DIV E -->
-          <li>
-            <a href="#" onclick="showPage('pageE')">
-              <i class="fa-solid fa-chart-column"></i>
-              <span class="menu-text">Salary</span>
-            </a>
-          </li>
+        <!-- LINK 5 -> DIV E -->
+        <li>
+          <a href="#" onclick="showPage('pageE')">
+            <i class="fa-solid fa-chart-column"></i>
+            <span class="menu-text">Salary</span>
+          </a>
+        </li>
 
-          <!-- LINK 6 -> DIV F -->
-          <li>
-            <a href="#" onclick="showPage('pageF')">
-              <i class="fa-solid fa-chart-column"></i>
-              <span class="menu-text">Notices</span>
-            </a>
-          </li>
+        <!-- LINK 6 -> DIV F -->
+        <li>
+          <a href="#" onclick="showPage('pageF')">
+            <i class="fa-solid fa-chart-column"></i>
+            <span class="menu-text">Notices</span>
+          </a>
+        </li>
 
-          <!-- LINK 7 -> DIV G -->
-          <li>
-            <a href="#" onclick="showPage('pageG')">
-              <i class="fa-solid fa-chart-column"></i>
-              <span class="menu-text">Contacts</span>
-            </a>
-          </li>
-          <!-- LINK 8 -> DIV H -->
-          <li>
-            <a href="#" onclick="showPage('pageH')">
-              <i class="fa-solid fa-chart-column"></i>
-              <span class="menu-text">Account Settings</span>
-            </a>
-          </li>
+        <!-- LINK 7 -> DIV G -->
+        <li>
+          <a href="#" onclick="showPage('pageG')">
+            <i class="fa-solid fa-chart-column"></i>
+            <span class="menu-text">Contacts</span>
+          </a>
+        </li>
+        <!-- LINK 8 -> DIV H -->
+        <li>
+          <a href="#" onclick="showPage('pageH')">
+            <i class="fa-solid fa-chart-column"></i>
+            <span class="menu-text">Account Settings</span>
+          </a>
+        </li>
 
-          {% if faculty.faculty_designation == 'HOD - IT' or faculty.faculty_designation == 'HOD - Management' %}
+        {% if faculty.faculty_designation == 'HOD - IT' or faculty.faculty_designation == 'HOD - Management' %}
+        <li>
           <a href="#" onclick="showPage('pageI')">
-              <i class="fa-solid fa-chart-column"></i>
-              <span class="menu-text">Issue Notices</span>
-            </a>
-          </li>
-          {% if faculty.faculty_designation == 'HOD - IT'%}
+            <i class="fa-solid fa-chart-column"></i>
+            <span class="menu-text">Issue Notices</span>
+          </a>
+        </li>
+        {% if faculty.faculty_designation == 'HOD - IT'%}
+        <li>
           <a href="makeSchedulesIT/" onclick="showPage('pageJ')">
-              <i class="fa-solid fa-chart-column"></i>
-              <span class="menu-text">Create Time Tables</span>
-            </a>
-          </li>
-          {% endif %}
+            <i class="fa-solid fa-chart-column"></i>
+            <span class="menu-text">Create Time Tables</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" onclick="showPage('pagek')">
+            <i class="fa-solid fa-chart-column"></i>
+            <span class="menu-text">All IT Batches</span>
+          </a>
+        </li>
+        {% endif %}
 
-          {% if faculty.faculty_designation == 'HOD - Management'%}
-          <a href="makeSchedulesM/" onclick="showPage('pageJ')">
-              <i class="fa-solid fa-chart-column"></i>
-              <span class="menu-text">Create Time Tables</span>
-            </a>
-          </li>
-          {% endif %}
-          {% endif %}
+        {% if faculty.faculty_designation == 'HOD - Management'%}
+        <a href="makeSchedulesM/" onclick="showPage('pageJ')">
+          <i class="fa-solid fa-chart-column"></i>
+          <span class="menu-text">Create Time Tables</span>
+        </a>
+        </li>
+        <li>
+          <a href="#" onclick="showPage('pagek1')">
+            <i class="fa-solid fa-chart-column"></i>
+            <span class="menu-text">All Management Batches</span>
+          </a>
+        </li>
+        {% endif %}
+        {% endif %}
 
-        </ul>
-      </aside>
+      </ul>
+    </aside>
 
-      <!-- =========================
+    <!-- =========================
          MAIN SECTION
     ========================== -->
-      <main class="main" id="main">
-        <!-- TOPBAR -->
-        <div class="topbar">
-          <div class="left-top">
-            <i class="fa-solid fa-bars menu-btn" id="menuBtn"></i>
+    <main class="main" id="main">
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <div class="left-top">
+          <i class="fa-solid fa-bars menu-btn" id="menuBtn"></i>
 
-            <div class="student-title">Faculty Dashboard</div>
-          </div>
-
-          <div class="logout-btn">
-            <form method="POST" action="{% url 'faculty_logout'%}">
-              {% csrf_token %}
-
-              <input
-                type="hidden"
-                name="faculty_id"
-                value="{{ faculty.faculty_id }}"
-              />
-              <button type="submit">Logout</button>
-            </form>
-          </div>
+          <div class="student-title">Faculty Dashboard</div>
         </div>
 
-        <!-- CONTENT -->
-        <div class="content">
-          <!-- PROFILE -->
-          <div class="student-profile"></div>
+        <div class="logout-btn">
+          <form method="POST" action="{% url 'faculty_logout'%}">
+            {% csrf_token %}
 
-          <!-- PALETTE -->
-          <div class="palette">
-            <!-- =========================
+            <input type="hidden" name="faculty_id" value="{{ faculty.faculty_id }}" />
+            <button type="submit">Logout</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="content">
+        <!-- PROFILE -->
+        <div class="student-profile"></div>
+
+        <!-- PALETTE -->
+        <div class="palette">
+          <!-- =========================
                DIV A
                DEFAULT DISPLAY BLOCK
           ========================== -->
-            <div class="page active" id="pageA">
-              <h2>Welcome {{ faculty.faculty_name }}</h2>
+          <div class="page active" id="pageA">
+            <h2>Welcome {{ faculty.faculty_name }}</h2>
 
-              <p>Faculty ID : {{ faculty.faculty_id }}</p>
+            <p>Faculty ID : {{ faculty.faculty_id }}</p>
 
-              <p>Designation : {{ faculty.faculty_designation }}</p>
+            <p>Designation : {{ faculty.faculty_designation }}</p>
 
-              <p>Option Selected : {{ faculty.optionselected }}</p>
-            </div>
+            <p>Option Selected : {{ faculty.optionselected }}</p>
+          </div>
 
-            <!-- =========================
+          <!-- =========================
                DIV B
           ========================== -->
-            <div class="page" id="pageB">
-              <h2>Routine</h2>
+          <div class="page" id="pageB">
+            <h2>Routine</h2>
 
-              <p>Monday : DBMS</p>
+            <p>Monday : DBMS</p>
 
-              <p>Tuesday : Operating Systems</p>
+            <p>Tuesday : Operating Systems</p>
 
-              <p>Wednesday : Django Lab</p>
-            </div>
+            <p>Wednesday : Django Lab</p>
+          </div>
 
-            <!-- =========================
+          <!-- =========================
                DIV C
           ========================== -->
-            <div class="page" id="pageC">
-              <h2>Attendance</h2>
+          <div class="page" id="pageC">
+            <h2>Attendance</h2>
 
-              <p>DBMS : 89%</p>
+            <p>DBMS : 89%</p>
 
-              <p>Operating Systems : 91%</p>
+            <p>Operating Systems : 91%</p>
 
-              <p>Django Lab : 95%</p>
-            </div>
-            <!-- --------------------------HOD PANEL -->
-            <div class="page" id="pageI">
-              <h2>Issue Notices</h2>
-=
-            </div>
-
-            <div class="page" id="pageJ">
-              <h2>Create Time Tables</h2>
-
-            </div>
-            <!-- --------------------------HOD PANEL -->
+            <p>Django Lab : 95%</p>
           </div>
-        </div>
-      </main>
-    </div>
+          <!-- --------------------------HOD PANEL -->
+          <div class="page" id="pageI">
+            <h2>Issue Notices</h2>
+            =
+          </div>
 
-    <!-- =========================
+          <div class="page" id="pageJ">
+            <h2>Create Time Tables</h2>
+
+          </div>
+
+          <div class="page" id="pagek">
+            <h2>List of IT batches</h2>
+            <table border="1">
+              <tr>
+                <th>ID</th>
+                <th>Course Name</th>
+              </tr>
+
+              {% for course in course_session_it %}
+              <tr>
+                <td>{{ course.id }}</td>
+                <td>{{ course.complete_name }}</td>
+              </tr>
+              {% endfor %}
+            </table>
+          </div>
+          <div class="page" id="pagek1">
+            <h2>List of Management Batches</h2>
+            <table border="1">
+              <tr>
+                <th>ID</th>
+                <th>Course Name</th>
+              </tr>
+
+              {% for course in course_session_manag %}
+              <tr>
+                <td>{{ course.id }}</td>
+                <td>{{ course.complete_name }}</td>
+              </tr>
+              {% endfor %}
+            </table>
+          </div>
+          <!-- --------------------------HOD PANEL -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- =========================
        JAVASCRIPT
   ========================== -->
-    <script>
-      /*
-    ============================================
-    SIDEBAR TOGGLE
-    ============================================
+  <script>
+    /*
+  ============================================
+  SIDEBAR TOGGLE
+  ============================================
 
-    Desktop:
-    Collapse sidebar
+  Desktop:
+  Collapse sidebar
 
-    Mobile:
-    Open/close sidebar
-    */
+  Mobile:
+  Open/close sidebar
+  */
 
-      const menuBtn = document.getElementById("menuBtn");
-      const sidebar = document.getElementById("sidebar");
-      const main = document.getElementById("main");
+    const menuBtn = document.getElementById("menuBtn");
+    const sidebar = document.getElementById("sidebar");
+    const main = document.getElementById("main");
 
-      menuBtn.addEventListener("click", () => {
-        if (window.innerWidth <= 768) {
-          sidebar.classList.toggle("open");
-        } else {
-          sidebar.classList.toggle("collapsed");
-          main.classList.toggle("expanded");
-        }
+    menuBtn.addEventListener("click", () => {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.toggle("open");
+      } else {
+        sidebar.classList.toggle("collapsed");
+        main.classList.toggle("expanded");
+      }
+    });
+
+    /*
+  ============================================
+  PAGE SWITCHING LOGIC
+  ============================================
+
+  A -> pageA
+  B -> pageB
+  C -> pageC
+
+  Default:
+  pageA = display block
+  Others hidden
+  */
+
+    function showPage(pageId) {
+      // get all pages
+      const pages = document.querySelectorAll(".page");
+
+      // hide all pages
+      pages.forEach((page) => {
+        page.classList.remove("active");
       });
 
+      // show selected page
+      document.getElementById(pageId).classList.add("active");
+
       /*
-    ============================================
-    PAGE SWITCHING LOGIC
-    ============================================
-
-    A -> pageA
-    B -> pageB
-    C -> pageC
-
-    Default:
-    pageA = display block
-    Others hidden
+      Auto close sidebar on mobile
+      after clicking a menu item
     */
-
-      function showPage(pageId) {
-        // get all pages
-        const pages = document.querySelectorAll(".page");
-
-        // hide all pages
-        pages.forEach((page) => {
-          page.classList.remove("active");
-        });
-
-        // show selected page
-        document.getElementById(pageId).classList.add("active");
-
-        /*
-        Auto close sidebar on mobile
-        after clicking a menu item
-      */
-        if (window.innerWidth <= 768) {
-          sidebar.classList.remove("open");
-        }
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove("open");
       }
-    </script>
-  </body>
+    }
+  </script>
+</body>
+
 </html>

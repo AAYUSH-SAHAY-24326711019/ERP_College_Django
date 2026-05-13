@@ -1,9 +1,26 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,JsonResponse
 from .models import Faculty,ActivityLogsFaculty,FacultyAssignedSubject
+from appErpAdmin.models import Courses,University,CourseSessions,StudentEnrollment
+from django.db.models import Q
 
 # Create your views here.
 def faculty_login(request):
+
+    course_session_it = CourseSessions.objects.filter(
+
+        Q(complete_name__startswith='BCA') |
+        Q(complete_name__startswith='BSC') |
+        Q(complete_name__startswith='MCA') 
+    )
+    course_session_manag = CourseSessions.objects.filter(
+
+        Q(complete_name__startswith='BBA') |
+        Q(complete_name__startswith='BCOM') |
+        Q(complete_name__startswith='MBA') |
+        Q(complete_name__startswith='PGDM') 
+    )
+
 
     if request.method=="POST":
         faculty_id = request.POST.get("faculty_id")
@@ -23,7 +40,9 @@ def faculty_login(request):
 
                 return render(request, 
                     'faculty_module/faculty_dashboard.html',{
-                        'faculty':faculty
+                        'faculty':faculty,
+                        'course_session_it':course_session_it,
+                        'course_session_manag':course_session_manag,
                     }
                             )
             else:
