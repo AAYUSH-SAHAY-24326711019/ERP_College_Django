@@ -2,7 +2,9 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.http import HttpResponse,JsonResponse
 from .models import Student, ActivityLogs
 from .forms import StudentImageUploadForm
-
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 def student_login(request):
     if request.method=="POST":
@@ -13,19 +15,36 @@ def student_login(request):
             student = Student.objects.get(student_id=student_id)
 
             #temp pwd check
+# -------------------------------------------------------------------
+            user = authenticate(
+            username=student_id,
+            password=password
+            )
+            # if password == student.student_id:
+            if user is not None:
+                # jwt code
+                refresh = RefreshToken.for_user(student)
+                access_token = str(refresh.access_token)
+                # print(access_token)
+                request.session['access_token'] = access_token
+                # 
 
-            if password == student.student_id:
-                #store into logs of activity
-                ActivityLogs.objects.create(
-                    student=student,
-                    action='Login'
-                )
+                token = request.session.get('access_token')
+                if token:
+                    jwt_auth = JWTAuthentication()
+                    validated_token = jwt_auth.get_validated_token(token)
+                    #store into logs of activity
+                    ActivityLogs.objects.create(
+                        student=student,
+                        action='Login'
+                    )
 
-                return render(request, 
-                    'student_module/student_dashboard.html',{
-                        'student':student
-                    }
-                            )
+                    return render(request, 
+                        'student_module/student_dashboard.html',{
+                            'student':student
+                        }
+                                )
+# -------------------------------------------------------------------
             else:
                 return render(request, 
                     'student_module/login.html',{

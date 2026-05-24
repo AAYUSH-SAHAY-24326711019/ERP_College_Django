@@ -1,9 +1,17 @@
 from django.db import models
 from appErpAdmin.models import CourseSessions
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 class Student(models.Model):
+    # jwt code add user field
+    user = models.OneToOneField(
+    User,
+    on_delete=models.CASCADE,
+    null=True
+    )
+    # 
     name = models.CharField(max_length=25)
     student_id = models.CharField(max_length=12,unique=True)
     course = models.CharField(max_length=6)

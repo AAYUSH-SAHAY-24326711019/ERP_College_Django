@@ -1,0 +1,57 @@
+(projectenv) PS C:\Users\Lenovo\Desktop\ERP_College_Django\ExecutableCodes\erpCollege> python manage.py makemigrations
+Migrations for 'appStudent':
+  appStudent\migrations\0006_student_user.py
+    + Add field user to student
+(projectenv) PS C:\Users\Lenovo\Desktop\ERP_College_Django\ExecutableCodes\erpCollege> python manage.py migrate
+Operations to perform:
+  Apply all migrations: admin, appErpAdmin, appFaculty, appMainsite, appStudent, auth, contenttypes, sessions
+Running migrations:
+  Applying appStudent.0006_student_user... OK
+(projectenv) PS C:\Users\Lenovo\Desktop\ERP_College_Django\ExecutableCodes\erpCollege> python manage.py shell
+24 objects imported automatically (use -v 2 for details).
+
+Ctrl click to launch VS Code Native REPL
+Python 3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 16:37:03) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from django.contrib.auth.models import User
+>>> from appStudent.models import Student
+>>> student = Student.objects.first()
+>>> 
+>>> student = Student.objects.first()
+>>> print(student.student_id)
+stu001
+>>> user = User.objects.create_user(    username=student.student_id,    password='1234')
+>>> student.user = user
+>>> student.save()
+>>> 
+>>> ^Z
+
+--------------------------------------------------
+
+1. db has records
+
+2. pull the id from there.
+
+3. link to the user models
+
+4. then authenticate :
+
+> students = Student.objects.all()
+>>> for student in students:
+...  user_exists = User.objects.filter(username=student.student_id).exists() 
+...  if user_exists:
+...      continue
+...  user = User.objects.create_user(username=student.student_id,password=student.student_id)
+...  student.user = user
+...  student.save()
+... 
+>>> 
+
+--------------------------------------------------
+
+
+
+
+
+
