@@ -10,6 +10,9 @@ import csv
 import calendar
 from datetime import datetime
 from django.utils.timezone import now
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 
@@ -40,62 +43,78 @@ def admin_login(request):
                 password=password
             )
 
-            # SESSION
-            request.session['admin_id'] = admin.id
-            request.session['admin_name'] = admin.name
-            request.session['admin_role'] = admin.role.role
-
-            # =========================
-            # DASHBOARD DATA
-            # =========================
-
-            current_date = datetime.now()
-
-            year = current_date.year
-
-            month = current_date.month
-
-            enquiries = MainsiteEnquiryForm.objects.filter(
-                created_at__year=year,
-                created_at__month=month
-            ).order_by('-id')
-
-            months = []
-
-            for i in range(1, 13):
-
-                months.append({
-                    'number': i,
-                    'name': calendar.month_name[i]
-                })
-
-            courses = Courses.objects.all()
-            universities = University.objects.all()
-            current_courses = CourseSessions.objects.all()
-            
-            context = {
-
-                'enquiries': enquiries,
-
-                'months': months,
-
-                'current_month': month,
-
-                'current_year': year,
-
-                'courses': courses,
-
-                'universities': universities,
-
-                'current_courses':current_courses,
-
-            }
-
-            return render(
-                request,
-                'erpadmin/dashboard.html',
-                context
+            user = authenticate(
+            username=admin_email,
+            password=password
             )
+
+            if user is not None:
+                # jwt code
+                refresh = RefreshToken.for_user(admin)
+                access_token = str(refresh.access_token)
+                # print(access_token)
+                request.session['access_token'] = access_token
+                # 
+
+                token = request.session.get('access_token')
+                # SESSION
+                request.session['admin_id'] = admin.id
+                request.session['admin_name'] = admin.name
+                request.session['admin_role'] = admin.role.role
+                if token:
+                    jwt_auth = JWTAuthentication()
+                    validated_token = jwt_auth.get_validated_token(token)
+                    # =========================
+                    # DASHBOARD DATA
+                    # =========================
+
+                    current_date = datetime.now()
+
+                    year = current_date.year
+
+                    month = current_date.month
+
+                    enquiries = MainsiteEnquiryForm.objects.filter(
+                        created_at__year=year,
+                        created_at__month=month
+                    ).order_by('-id')
+
+                    months = []
+
+                    for i in range(1, 13):
+
+                        months.append({
+                            'number': i,
+                            'name': calendar.month_name[i]
+                        })
+
+                    courses = Courses.objects.all()
+                    universities = University.objects.all()
+                    current_courses = CourseSessions.objects.all()
+            
+                    context = {
+
+                        'enquiries': enquiries,
+
+                        'months': months,
+
+                        'current_month': month,
+
+                        'current_year': year,
+
+                        'courses': courses,
+
+                        'universities': universities,
+
+                        'current_courses':current_courses,
+
+                    }
+
+                    return render(
+                        request,
+                        'erpadmin/dashboard.html',
+                        context
+                    )
 
         except ErpAdmin.DoesNotExist:
 

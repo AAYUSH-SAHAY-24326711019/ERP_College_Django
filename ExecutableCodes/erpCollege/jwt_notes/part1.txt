@@ -61,10 +61,48 @@ stu001
 ...  faculty.user = user
 ...  faculty.save()
 ... 
+---------------------------------------------------------------
+>>> from django.contrib.auth.models import User
+>>> from appErpAdmin.models import ErpAdmin
+>>> admins = ErpAdmin.objects.all()
+>>> for admin in admins:
+...  user_exists=User.objects.filter(username=admin.id).exists()
+...  if user_exists:
+...      continue
+...  user = User.objects.create_user(username=admin.email,password=admin.password)
+...  admin.user = user
+...  admin.save()
+... 
+
+----------------------------------------------------------------
+
+sql of db
+
+INSERT INTO public."appStudent_student"
+(id ,"name", student_id, course, "session", image, date_created, email)
+values
+(2,'student2', 'stu002', 'MCA','2024-2026', 'students/images.jpg', NOW(), 'student2@erp.com'),
+(3,'student3', 'stu003', 'MCA','2024-2026', 'students/images.jpg', NOW(), 'student3@erp.com'),
+(4,'student4', 'stu004', 'MCA','2024-2026', 'students/images.jpg', NOW(), 'student4@erp.com'),
+(5,'student5', 'stu005', 'MCA','2024-2026', 'students/images.jpg', NOW(), 'student5@erp.com'),
+(6,'student6', 'stu006', 'MCA','2024-2026', 'students/images.jpg', NOW(), 'student6@erp.com'),
+(7,'student7', 'stu007', 'MCA','2024-2026', 'students/images.jpg', NOW(), 'student7@erp.com'),
+(8,'student8', 'stu008', 'MCA','2024-2026', 'students/images.jpg', NOW(), 'student8@erp.com'),
+(9,'student9', 'stu009', 'MCA','2024-2026', 'students/images.jpg', NOW(), 'student9@erp.com')
 
 
-
-
+INSERT INTO public."appFaculty_faculty"
+(id, date_created, faculty_email, faculty_name, faculty_id, faculty_designation, optionselected)
+values 
+(1,NOW(),'faculty_erp1@erp.com','fa001','fa001','professor','Both_roles'),
+(2,NOW(),'faculty_erp2@erp.com','fa002','fa002','professor','Both_roles'),
+(3,NOW(),'faculty_erp3@erp.com','fa003','fa003','professor','Both_roles'),
+(4,NOW(),'faculty_erp4@erp.com','fa004','fa004','professor','Both_roles'),
+(5,NOW(),'faculty_erp5@erp.com','fa005','fa005','professor','Both_roles'),
+(6,NOW(),'faculty_erp6@erp.com','fa006','fa006','professor','Both_roles'),
+(7,NOW(),'faculty_erp7@erp.com','fa007','fa007','professor','Both_roles'),
+(8,NOW(),'faculty_erp8@erp.com','fa008','fa008','professor','Both_roles'),
+(9,NOW(),'faculty_erp9@erp.com','fa009','fa009','professor','Both_roles')
 
 
 
