@@ -3,6 +3,9 @@ from django.http import HttpResponse,JsonResponse
 from .models import Faculty,ActivityLogsFaculty,FacultyAssignedSubject
 from appErpAdmin.models import Courses,University,CourseSessions,StudentEnrollment
 from django.db.models import Q
+from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 # Create your views here.
 def faculty_login(request):
@@ -31,20 +34,39 @@ def faculty_login(request):
 
             #temp pwd check
 
-            if password == faculty.faculty_id:
-                #store into logs of activity
-                ActivityLogsFaculty.objects.create(
-                    faculty=faculty,
-                    action='Login'
-                )
+            # jwt code
 
-                return render(request, 
-                    'faculty_module/faculty_dashboard.html',{
-                        'faculty':faculty,
-                        'course_session_it':course_session_it,
-                        'course_session_manag':course_session_manag,
-                    }
-                            )
+            user = authenticate(
+            username=faculty_id,
+            password=password
+            )
+
+            # if password == faculty.faculty_id:
+            if user is not None:
+                # jwt code
+                refresh = RefreshToken.for_user(faculty)
+                access_token = str(refresh.access_token)
+                # print(access_token)
+                request.session['access_token'] = access_token
+                # 
+
+                token = request.session.get('access_token')
+                #store into logs of activity
+                if token:
+                    jwt_auth = JWTAuthentication()
+                    validated_token = jwt_auth.get_validated_token(token)
+                    ActivityLogsFaculty.objects.create(
+                        faculty=faculty,
+                        action='Login'
+                    )
+
+                    return render(request, 
+                        'faculty_module/faculty_dashboard.html',{
+                            'faculty':faculty,
+                            'course_session_it':course_session_it,
+                            'course_session_manag':course_session_manag,
+                        }
+                                )
             else:
                 return render(request, 
                     'faculty_module/login.html',{

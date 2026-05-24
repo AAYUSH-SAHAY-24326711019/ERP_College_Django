@@ -50,6 +50,19 @@ stu001
 
 --------------------------------------------------
 
+>>> from django.contrib.auth.models import User
+>>> from appFaculty.models import Faculty
+>>> faculties = Faculty.objects.all()
+>>> for faculty in faculties:
+...  user_exists = User.objects.filter(username=faculty.faculty_id).exists()
+...  if user_exists:
+...      continue
+...  user=User.objects.create_user(username=faculty.faculty_id,password=faculty.faculty_id)
+...  faculty.user = user
+...  faculty.save()
+... 
+
+
 
 
 

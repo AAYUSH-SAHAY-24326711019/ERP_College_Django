@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Faculty(models.Model):
 
@@ -11,6 +11,14 @@ class Faculty(models.Model):
         ('HOD - Management', 'HOD - Management'),
         ('IT / Skill Trainer', 'IT / Skill Trainer'),
     ]
+
+    # jwt code add user field
+    user = models.OneToOneField(
+    User,
+    on_delete=models.CASCADE,
+    null=True
+    )
+    # 
 
     date_created = models.DateTimeField(auto_now_add=True)
 
