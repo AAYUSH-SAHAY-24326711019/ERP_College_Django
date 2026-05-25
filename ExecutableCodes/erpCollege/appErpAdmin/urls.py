@@ -46,4 +46,5 @@ urlpatterns = [
     path('show-student-course/',views.showStudentCourse,name='showStudentCourse'),
 
     path('form1/',views.form1,name='form1'),
+    path('form1_all/',views.form1_all,name='form1_all'),
 ]

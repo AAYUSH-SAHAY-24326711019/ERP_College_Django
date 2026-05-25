@@ -365,3 +365,8 @@ def form1(request):
     else:
         form = Form1_main()
     return render(request,'erpadmin/add_students_form1.html',{"form":form})
+
+def form1_all(request):
+    students=Student.objects.all()
+    return render(request,'erpadmin/all_students_form1.html',{"students":students})
+
