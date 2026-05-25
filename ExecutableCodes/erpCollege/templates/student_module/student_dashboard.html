@@ -408,6 +408,7 @@
         <div class="content">
           <!-- PROFILE -->
           <div class="student-profile" >
+            {% if student.image %}
            <img style="
             width:150px;
             height:150px;
@@ -415,7 +416,10 @@
             position: absolute;
             right:-2%;
             top:-11%;
-            border-radius: 50%;" src="{{ student.image.url }}"></img>
+            border-radius: 50%;" src="{{ student.image.url }}">
+            <!-- border-radius: 50%;" src="student.image.url"> -->
+            </img>
+            {% endif %}
           </div>
 
           <!-- PALETTE -->
