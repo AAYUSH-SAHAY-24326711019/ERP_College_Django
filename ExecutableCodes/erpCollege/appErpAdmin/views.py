@@ -354,4 +354,5 @@ def showStudentCourse(request):
     return redirect('dashboard')
 
 
-
+def form1(request):
+    print("hello World")
