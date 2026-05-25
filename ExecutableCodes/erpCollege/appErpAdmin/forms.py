@@ -15,20 +15,42 @@ class Form1_main(forms.ModelForm):
             "session",
           
         ]
+        def save(self, commit=True):
+            student = super().save(commit=False)
 
-    def save(self, commit=True):
-        student = super().save(commit=False)
+            # create user only if not linked already
+            if not student.user:
+                user, created = User.objects.get_or_create(
+                username=student.student_id
+                )
 
-        # create auth_user object
-        user = User.objects.create_user(
-            username=student.student_id,
-            password=student.student_id
-        )
+                if created:
+                    user.set_password(student.student_id)
+                    user.save()
 
-        # link user
-        student.user = user
+            student.user = user
 
-        if commit:
-            student.save()
+            if commit:
+                student.save()
 
-        return student
+            return student
+
+    
+
+    # def save(self, commit=True):
+    #     student = super().save(commit=False)
+
+    #     # create auth_user object
+    #     user = User.objects.create_user(
+    #         username=student.student_id,
+    #         password=student.student_id
+    #     )
+
+    #     # link user
+    #     student.user = user
+
+    #     if commit:
+    #         student.save()
+
+    #     return student
+    

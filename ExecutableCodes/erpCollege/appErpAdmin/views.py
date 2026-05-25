@@ -1,7 +1,7 @@
 import json
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import ErpAdmin
 from appMainsite.models import MainsiteEnquiryForm
 from appStudent.models import Student
@@ -367,6 +367,19 @@ def form1(request):
     return render(request,'erpadmin/add_students_form1.html',{"form":form})
 
 def form1_all(request):
-    students=Student.objects.all()
+    students=Student.objects.all().order_by('id')
     return render(request,'erpadmin/all_students_form1.html',{"students":students})
+
+def form1_edit(request,id):
+    student=get_object_or_404(Student,id=id)
+    if request.method=="POST":
+        form = Form1_main(request.POST,instance=student)
+
+        if form.is_valid():
+            form.save()
+            return redirect('/erpadmin/form1_all')
+    else:
+        form =Form1_main(instance=student)
+    return render(request,'erpadmin/edit_student_form1.html',{'form':form})
+
 
