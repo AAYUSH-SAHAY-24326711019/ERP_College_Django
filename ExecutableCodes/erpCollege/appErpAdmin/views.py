@@ -13,6 +13,7 @@ from django.utils.timezone import now
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from .forms import Form1_main
 
 
 
@@ -355,4 +356,12 @@ def showStudentCourse(request):
 
 
 def form1(request):
-    print("hello World")
+    if request.method=="POST":
+        form = Form1_main(request.POST)
+        if form.is_valid():
+            form.save()
+            request,
+            'erpadmin/dashboard.html'
+    else:
+        form = Form1_main()
+    return render(request,'erpadmin/add_students_form1.html',{"form":form})

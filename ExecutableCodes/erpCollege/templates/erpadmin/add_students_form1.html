@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form 1 Add Students</title>
+</head>
+<body>
+    <h2>Form 1 Store Students to DB
+    </h2>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_ul}}
+        <button type="submit">Store Record</button>
+        <button ><a href="/erpadmin/form1/">Reset Form on storing</a></button>
+    </form>
+    <a src="#"><u>Click to see the Stored Records</u></a>
+</body>
+</html>
