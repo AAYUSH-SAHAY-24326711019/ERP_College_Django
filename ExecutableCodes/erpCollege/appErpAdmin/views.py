@@ -6,6 +6,7 @@ from .models import ErpAdmin
 from appMainsite.models import MainsiteEnquiryForm
 from appStudent.models import Student
 from appErpAdmin.models import Courses,University,CourseSessions,StudentEnrollment
+from appFaculty.models import Faculty
 import csv
 import calendar
 from datetime import datetime
@@ -393,3 +394,7 @@ def form2(request):
     else:
         form = Form2_main()
     return render(request,'erpadmin/add_faculty_form2.html',{"form":form})
+
+def form2_all(request):
+    faculty=Faculty.objects.all().order_by('id')
+    return render(request,'erpadmin/all_faculty_form2.html',{"faculty":faculty})

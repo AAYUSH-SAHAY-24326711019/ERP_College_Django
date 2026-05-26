@@ -50,5 +50,6 @@ urlpatterns = [
     path('form1_edit/<int:id>',views.form1_edit,name='form1_edit'),
 
     path('form2/',views.form2,name='form2'),
+    path('form2_all/',views.form2_all,name='form2_all'),
     
 ]
