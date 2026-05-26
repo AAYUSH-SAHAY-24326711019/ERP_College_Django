@@ -1,5 +1,6 @@
 from django import forms
 from appStudent.models import Student
+from appFaculty.models import Faculty
 from django.contrib.auth.models import User
 
 class Form1_main(forms.ModelForm):
@@ -35,22 +36,34 @@ class Form1_main(forms.ModelForm):
 
             return student
 
-    
+class Form2_main(forms.ModelForm):
+    class Meta:
+        model = Faculty
 
-    # def save(self, commit=True):
-    #     student = super().save(commit=False)
+        fields =[
+            "faculty_id",
+            "faculty_name",
+            "faculty_email",
+            "optionselected",
+            "faculty_designation",
+          
+        ]
+        def save(self, commit=True):
+            faculty = super().save(commit=False)
 
-    #     # create auth_user object
-    #     user = User.objects.create_user(
-    #         username=student.student_id,
-    #         password=student.student_id
-    #     )
+            # create user only if not linked already
+            if not faculty.user:
+                user, created = User.objects.get_or_create(
+                username=faculty.faculty_id
+                )
 
-    #     # link user
-    #     student.user = user
+                if created:
+                    user.set_password(faculty.faculty_id)
+                    user.save()
 
-    #     if commit:
-    #         student.save()
+            faculty.user = user
 
-    #     return student
-    
+            if commit:
+                faculty.save()
+
+            return faculty

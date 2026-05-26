@@ -13,7 +13,7 @@ from django.utils.timezone import now
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .forms import Form1_main
+from .forms import Form1_main,Form2_main
 
 
 
@@ -383,3 +383,13 @@ def form1_edit(request,id):
     return render(request,'erpadmin/edit_student_form1.html',{'form':form})
 
 
+def form2(request):
+    if request.method=="POST":
+        form = Form2_main(request.POST)
+        if form.is_valid():
+            form.save()
+            request,
+            'erpadmin/dashboard.html'
+    else:
+        form = Form2_main()
+    return render(request,'erpadmin/add_faculty_form2.html',{"form":form})

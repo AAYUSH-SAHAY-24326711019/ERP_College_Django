@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form 2 Add Faculty</title>
+</head>
+
+<body>
+    <h2>Form 2 Store Faculty to DB
+    </h2>
+    <p>
+    <ul>
+        <li>Copy the contents for the option selected</li>
+        <li>
+            <ol>
+                <li>HOD - IT</li>
+                <li>HOD - Management</li>
+                <li>opt1_IT_Only</li>
+                <li>opt2_Manag_Only</li>
+                <li>opt3_Both_roles</li>
+            </ol>
+        </li>
+    </ul>
+    </p>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form.as_ul}}
+        <button type="submit">Store Record</button>
+        <button><a href="/erpadmin/form2/">Reset Form on storing</a></button>
+    </form>
+    <!-- <a target="_blank" href="/erpadmin/form1_all/">Click to see the Stored Records</a> -->
+</body>
+
+</html>

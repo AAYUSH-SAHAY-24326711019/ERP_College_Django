@@ -105,4 +105,12 @@ values
 (9,NOW(),'faculty_erp9@erp.com','fa009','fa009','professor','Both_roles')
 
 
+SELECT setval(
+    '"appStudent_student_id_seq"',
+    (SELECT MAX(id) FROM "appStudent_student")
+);
 
+SELECT setval(
+    '"appFaculty_faculty_id_seq"',
+    (SELECT MAX(id) FROM "appFaculty_faculty")
+);
