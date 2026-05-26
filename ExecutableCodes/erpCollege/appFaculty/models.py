@@ -27,7 +27,7 @@ class Faculty(models.Model):
     faculty_name = models.CharField(max_length=100)
 
     faculty_id = models.CharField(
-        max_length=4,
+        max_length=10,
         unique=True
     )
 

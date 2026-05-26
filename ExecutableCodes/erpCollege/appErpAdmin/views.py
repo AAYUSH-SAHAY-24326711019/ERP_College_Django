@@ -398,3 +398,15 @@ def form2(request):
 def form2_all(request):
     faculty=Faculty.objects.all().order_by('id')
     return render(request,'erpadmin/all_faculty_form2.html',{"faculty":faculty})
+
+def form2_edit(request,id):
+    faculty=get_object_or_404(Faculty,id=id)
+    if request.method=="POST":
+        form = Form2_main(request.POST,instance=faculty)
+
+        if form.is_valid():
+            form.save()
+            return redirect('/erpadmin/form2_all')
+    else:
+        form =Form2_main(instance=faculty)
+    return render(request,'erpadmin/edit_faculty_form2.html',{'form':form})
