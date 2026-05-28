@@ -114,3 +114,10 @@ SELECT setval(
     '"appFaculty_faculty_id_seq"',
     (SELECT MAX(id) FROM "appFaculty_faculty")
 );
+
+----------------------------------------------------------
+>>> exec(open("make_user_script.py").read())
+Initiate user_creation for all records [student]
+Done user_creation for all records [student]
+Initiate user_creation for all records [faculty]
+Done user_creation for all records [faculty]
