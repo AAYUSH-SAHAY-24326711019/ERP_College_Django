@@ -8,4 +8,6 @@ urlpatterns = [
     path('makeSchedulesIT/',views.makeSchedulesIT,name='makeSchedulesIT'),
     path('makeSchedulesM/',views.makeSchedulesM,name='makeSchedulesM'),
     path('add-faculty-subject/',views.add_faculty_subject,name='add_faculty_subject'),
+    path('mark-attendance/',views.mark_attendance,name='mark_attendance'),
+    path('get-students-by-course/',views.get_students_by_course,name='get_students_by_course'),
 ]

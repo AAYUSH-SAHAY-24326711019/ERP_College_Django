@@ -317,6 +317,12 @@
             <span class="menu-text">My Details</span>
           </a>
         </li>
+        <li>
+          <a href="#" onclick="showPage('pageA1')">
+            <i class="fa-solid fa-user"></i>
+            <span class="menu-text">Forms Section</span>
+          </a>
+        </li>
 
         <!-- LINK 2 -> DIV B -->
         <li>
@@ -454,6 +460,11 @@
             <p>Designation : {{ faculty.faculty_designation }}</p>
 
             <p>Option Selected : {{ faculty.optionselected }}</p>
+          </div>
+
+          <div class="page active" id="pageA1">
+            <h2>Forms Section</h2>
+              <a target="_blank" href="mark-attendance/" style="font-size: large;color: #0662d2;">Mark Student Attendance</a>
           </div>
 
           <!-- =========================

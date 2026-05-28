@@ -121,3 +121,64 @@ Initiate user_creation for all records [student]
 Done user_creation for all records [student]
 Initiate user_creation for all records [faculty]
 Done user_creation for all records [faculty]
+
+Username (leave blank to use 'lenovo'): admin_erp
+Email address: admin_erp@erp.com
+Password: admin
+Password (again): 
+The password is too similar to the username.
+This password is too short. It must contain at least 8 characters.
+This password is too common.
+Bypass password validation and create user anyway? [y/N]: y
+Superuser created successfully.
+
+
+/*temp
+
+def mark_attendance(request):
+
+    faculty = Faculty.objects.get(
+        faculty_id='fa010'
+    )
+
+    assigned_subjects = FacultyAssignedSubject.objects.filter(
+        faculty=faculty.faculty_id
+    )
+
+    courses = CourseSessions.objects.all()
+
+    context = {
+        'faculty': faculty,
+        'subjects': assigned_subjects,
+        'courses': courses,
+        'current_datetime': datetime.now()
+    }
+
+    return render(
+        request,
+        'faculty_module/mark_attendance.html',
+        context
+    )
+
+def get_students_by_course(request):
+
+    course_id = request.GET.get('course_id')
+
+    enrollments = StudentEnrollment.objects.filter(
+        course_id=course_id
+    )
+
+    student_data = []
+
+    for enrollment in enrollments:
+
+        student = enrollment.student
+
+        student_data.append({
+            'id': student.id,
+            'student_id': student.student_id,
+            'name': student.name
+        })
+
+    return JsonResponse(student_data, safe=False)
+temp*/

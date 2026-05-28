@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mark Attendance</title>
+</head>
+
+<body>
+
+    <h1>Mark Attendance</h1>
+
+    <h3>
+        Faculty :
+        {{ faculty.faculty_name }}
+    </h3>
+
+    <h3>
+        Date :
+        {{ current_datetime }}
+    </h3>
+
+    <br>
+
+    <label>
+        Select Subject
+    </label>
+
+    <select id="subject">
+
+        <option value="">
+            ---------
+        </option>
+
+        {% for sub in subjects %}
+
+            <option value="{{ sub.subject_name }}">
+
+                {{ sub.subject_name }}
+
+            </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <label>
+        Select Course
+    </label>
+
+    <select id="course">
+
+        <option value="">
+            ---------
+        </option>
+
+      {% for course in courses %}
+
+<option value="{{ course.id }}">
+
+    {{ course.complete_name }}
+
+</option>
+
+{% endfor %}
+
+    </select>
+
+</body>
+</html>
