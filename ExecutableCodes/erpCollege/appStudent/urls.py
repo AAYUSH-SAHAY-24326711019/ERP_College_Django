@@ -4,11 +4,8 @@ from . import views
 urlpatterns = [
     path('', views.student_login, name='student_login'),
     path('logout/', views.student_logout, name='student_logout'),
-    path(
-        'upload-image/',
-        views.upload_student_image,
-        name='upload_student_image'
-    ),
+    path('upload-image/',views.upload_student_image,name='upload_student_image'),
+    path('attendance-dashboard/',views.student_attendance_dashboard,name='student_attendance_dashboard'),
 
 
 ]

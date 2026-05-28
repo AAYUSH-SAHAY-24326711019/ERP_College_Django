@@ -5,6 +5,9 @@ from .forms import StudentImageUploadForm
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from appFaculty.models import StudentWiseAttendance
+from appFaculty.models import FacultyWiseAttendance
+from django.db.models import Count
 
 def student_login(request):
     if request.method=="POST":
@@ -27,6 +30,8 @@ def student_login(request):
                 access_token = str(refresh.access_token)
                 # print(access_token)
                 request.session['access_token'] = access_token
+                request.session['s_id']=student_id
+                print(student_id)
                 # 
 
                 token = request.session.get('access_token')
@@ -153,3 +158,70 @@ def upload_student_image(request):
             )
 
     return render(request, 'student_module/upload_image.html')
+
+
+def student_attendance_dashboard(request):
+
+    student_id = request.session.get(
+        's_id'
+    )
+
+    attendance_logs = StudentWiseAttendance.objects.filter(
+        student_id=student_id
+    ).order_by('-attendance_date')
+
+    attendance_summary = []
+
+    subjects = StudentWiseAttendance.objects.filter(
+        student_id=student_id
+    ).values(
+        'subject'
+    ).distinct()
+
+    for sub in subjects:
+
+        subject_name = sub['subject']
+
+        total_classes = FacultyWiseAttendance.objects.filter(
+            subject=subject_name
+        ).count()
+
+        present_classes = StudentWiseAttendance.objects.filter(
+            student_id=student_id,
+            subject=subject_name
+        ).count()
+
+        percentage = 0
+
+        if total_classes > 0:
+
+            percentage = (
+                present_classes / total_classes
+            ) * 100
+
+        attendance_summary.append({
+
+            'subject': subject_name,
+
+            'total_classes': total_classes,
+
+            'present_classes': present_classes,
+
+            'percentage': round(percentage, 2)
+
+        })
+    
+    context = {
+
+    'attendance_logs': attendance_logs,
+
+    'attendance_summary': attendance_summary,
+
+    'student_id': student_id
+    }
+
+    return render(
+        request,
+        'student_module/student_attendance.html',
+        context
+    )

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>
+        Student Attendance
+    </title>
+
+</head>
+
+<style>
+
+#attendance-table{
+
+    display:none;
+}
+
+</style>
+
+<body>
+
+    <h1>
+
+        Attendance Dashboard
+
+    </h1>
+
+    <h3>
+
+        Student :
+        {{ student_id }}
+
+    </h3>
+
+
+<h2>
+
+    Attendance Summary
+
+</h2>
+
+<table border="1" cellpadding="10">
+
+    <tr>
+
+        <th>Subject</th>
+
+        <th>Total Classes</th>
+
+        <th>Present</th>
+
+        <th>Attendance %</th>
+
+    </tr>
+
+    {% for item in attendance_summary %}
+
+    <tr>
+
+        <td>
+
+            {{ item.subject }}
+
+        </td>
+
+        <td>
+
+            {{ item.total_classes }}
+
+        </td>
+
+        <td>
+
+            {{ item.present_classes }}
+
+        </td>
+
+        <td>
+
+            {{ item.percentage }} %
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+    <button onclick="showLogs()">
+
+    Show Logs
+
+</button>
+    <table border="1" cellpadding="10"
+     id="attendance-table">
+
+        <tr>
+
+            <th>Date</th>
+
+            <th>Course</th>
+
+            <th>Subject</th>
+
+            <th>Faculty</th>
+
+        </tr>
+
+        {% for log in attendance_logs %}
+
+        <tr>
+
+            <td>
+                {{ log.attendance_date }}
+            </td>
+
+            <td>
+                {{ log.course_name }}
+            </td>
+
+            <td>
+                {{ log.subject }}
+            </td>
+
+            <td>
+                {{ log.faculty_id }}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    <br><br>
+
+
+<script>
+function showLogs(){
+
+    document.getElementById(
+        'attendance-table'
+    ).style.display = 'block'
+}
+
+</script>
+</body>
+
+</html>

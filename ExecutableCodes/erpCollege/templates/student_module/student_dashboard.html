@@ -320,6 +320,12 @@
               <span class="menu-text">My Details</span>
             </a>
           </li>
+          <li>
+            <a href="#" onclick="showPage('pageA1')">
+              <i class="fa-solid fa-user"></i>
+              <span class="menu-text">Forms Section</span>
+            </a>
+          </li>
 
           <!-- LINK 2 -> DIV B -->
           <li>
@@ -436,6 +442,14 @@
               <p>Course : {{ student.course }}</p>
 
               <p>Session : {{ student.session }}</p>
+            </div>
+
+            <div class="page active" id="pageA1">
+              <h2>Forms Section</h2>
+
+              <a target="_blank" href="attendance-dashboard/"
+              style="color:#02124a; font-size: large;
+              text-decoration: underline;">See Attendance [Form4]</a>
             </div>
 
             <!-- =========================
