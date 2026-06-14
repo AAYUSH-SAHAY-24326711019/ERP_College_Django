@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -31,6 +31,386 @@
         <button><a href="/erpadmin/form2/">Reset Form on storing</a></button>
     </form>
     <a target="_blank" href="/erpadmin/form2_all/">Click to see the Stored Records</a>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form 2 Add Faculty</title>
+    <style>
+
+        /* ============================================================
+           RESET
+        ============================================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ============================================================
+           PAGE BACKGROUND — warm paper tone
+           body — styled directly, no id needed
+        ============================================================ */
+        body {
+            min-height: 100vh;
+            background: #F7F3EE;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 16px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #2A2438;
+        }
+
+        /* ============================================================
+           CARD HEADER — h2
+           ADD: id="form-title"
+           Letterhead frame: thick gold rule on top, hairline gold
+           rule on bottom of the violet panel.
+        ============================================================ */
+        #form-title {
+            width: 100%;
+            max-width: 600px;
+            background: #2E1F4D;
+            color: #F7F3EE;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 700;
+            font-size: clamp(1.35rem, 3vw, 1.75rem);
+            letter-spacing: 0.5px;
+            text-align: left;
+            padding: 26px 36px 22px;
+            border-top: 5px solid #BFA046;
+            border-bottom: 1px solid #BFA046;
+        }
+
+        /* ============================================================
+           INSTRUCTIONS BLOCK
+           IMPORTANT FIX: the wrapping tag must be changed from
+           <p id="form-instructions"> to <div id="form-instructions">.
+           A <p> cannot legally contain a <ul>, so browsers silently
+           close the <p> the moment <ul> begins — leaving the id on
+           an empty paragraph and the list completely unstyled.
+           Changing the tag to <div> (same id, same content) fixes
+           this without adding any new element.
+
+           Inner <ul>/<ol>/<li> are styled via descendant selectors —
+           no extra ids/classes needed inside.
+        ============================================================ */
+        #form-instructions {
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            background: #F3EEF8;
+            border: 1px solid #E5DED2;
+            border-top: none;
+            border-left: 4px solid #BFA046;
+            padding: 22px 36px 24px;
+        }
+
+        #form-instructions ul,
+        #form-instructions ol {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #form-instructions li::marker {
+            content: none;
+        }
+
+        #form-instructions > ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        #form-instructions > ul > li {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #2E1F4D;
+            letter-spacing: 0.2px;
+        }
+
+        /* Numbered options rendered as small gold medallions */
+        #form-instructions ol {
+            counter-reset: opt;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        #form-instructions ol li {
+            counter-increment: opt;
+            position: relative;
+            padding-left: 36px;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #564A6E;
+        }
+
+        #form-instructions ol li::before {
+            content: counter(opt);
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #BFA046;
+            color: #FFFFFF;
+            font-size: 0.7rem;
+            font-weight: 700;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ============================================================
+           FORM CARD — <form>
+           ADD: id="student-form"
+        ============================================================ */
+        #student-form {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 600px;
+            padding: 36px 36px 32px;
+            border: 1px solid #E5DED2;
+            border-top: none;
+            box-shadow: 0 10px 28px rgba(46, 31, 77, 0.08);
+        }
+
+        /* ============================================================
+           FORM FIELDS
+           Django's {{form.as_ul}} auto-generates:
+             <ul> <li> <label> <input>/<select>
+           Styled via descendant selectors on #student-form —
+           no extra ids/classes required inside, and selectors
+           use descendant (not direct-child) matching so they
+           still work if Django adds a wrapping <div>.
+        ============================================================ */
+        #student-form ul,
+        #student-form ol {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #student-form li::marker {
+            content: none;
+        }
+
+        #student-form ul {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        #student-form li {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        #student-form label {
+            flex: 0 0 140px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: #2E1F4D;
+            letter-spacing: 0.2px;
+        }
+
+        #student-form input,
+        #student-form select {
+            flex: 1;
+            min-width: 0;
+            padding: 10px 14px;
+            border: 1px solid #D7CFE3;
+            border-radius: 2px;
+            font-size: 0.95rem;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #2A2438;
+            background: #FBFAF8;
+            outline: none;
+            transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        #student-form input:focus,
+        #student-form select:focus {
+            border-color: #2E1F4D;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(191, 160, 70, 0.18);
+        }
+
+        /* ============================================================
+           BUTTON ROW
+        ============================================================ */
+
+        /* STORE RECORD BUTTON — <button type="submit">
+           ADD: id="btn-store"  class="btn" */
+        #btn-store {
+            background: #2E1F4D;
+            color: #F7F3EE;
+            border: 1px solid #2E1F4D;
+            padding: 11px 26px;
+            border-radius: 2px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            transition: background 0.18s ease, border-color 0.18s ease;
+            margin-right: 14px;
+        }
+
+        #btn-store:hover {
+            background: #1F1536;
+            border-color: #BFA046;
+        }
+
+        /* RESET BUTTON — <button> wrapping <a>
+           ADD: id="btn-reset"  class="btn" */
+        #btn-reset {
+            background: #FFFFFF;
+            border: 1px solid #2E1F4D;
+            padding: 10px 24px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.18s ease, border-color 0.18s ease;
+        }
+
+        #btn-reset a {
+            color: #2E1F4D;
+            text-decoration: none;
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        #btn-reset:hover {
+            background: #F3EEF8;
+            border-color: #BFA046;
+        }
+
+        /* ============================================================
+           VIEW RECORDS LINK — <a target="_blank" …>
+           ADD: id="view-records-link"
+        ============================================================ */
+        #view-records-link {
+            display: block;
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+            text-align: left;
+            color: #2E1F4D;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            border: 1px solid #E5DED2;
+            border-top: none;
+            border-left: 4px solid #BFA046;
+            background: #F3EEF8;
+            padding: 14px 32px;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+
+        #view-records-link:hover {
+            background: #EBE3F4;
+            color: #8A6F22;
+        }
+
+        /* ============================================================
+           RESPONSIVE — mobile (≤ 520 px)
+        ============================================================ */
+        @media (max-width: 520px) {
+
+            #form-title {
+                padding: 20px 22px 18px;
+            }
+
+            #form-instructions {
+                padding: 18px 22px 20px;
+            }
+
+            #student-form {
+                padding: 26px 22px 28px;
+            }
+
+            #student-form li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 7px;
+            }
+
+            #student-form label {
+                flex: none;
+            }
+
+            #student-form input,
+            #student-form select {
+                width: 100%;
+            }
+
+            #btn-store,
+            #btn-reset {
+                display: block;
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            #btn-reset a {
+                display: block;
+            }
+
+            #view-records-link {
+                padding: 14px 22px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <h2 id="form-title">Form 2 Store Faculty to DB</h2>
+
+    <div id="form-instructions">
+    <ul>
+        <li>Copy the contents for the option selected</li>
+        <li>
+            <ol>
+                <li>HOD - IT</li>
+                <li>HOD - Management</li>
+                <li>opt1_IT_Only</li>
+                <li>opt2_Manag_Only</li>
+                <li>opt3_Both_roles</li>
+            </ol>
+        </li>
+    </ul>
+    </div>
+
+    <form action="" method="POST" id="student-form">
+        {% csrf_token %}
+        {{form.as_ul}}
+        <button type="submit" id="btn-store" class="btn">Store Record</button>
+        <button id="btn-reset" class="btn"><a href="/erpadmin/form2/">Reset Form on storing</a></button>
+    </form>
+
+    <a target="_blank" href="/erpadmin/form2_all/" id="view-records-link">Click to see the Stored Records</a>
+
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,5 +29,212 @@
         {% endfor %}
     </table>
     
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students List</title>
+    <style>
+
+        /* ============================================================
+           RESET
+        ============================================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ============================================================
+           PAGE BACKGROUND — same warm paper tone as the forms
+           body — styled directly, no id needed
+        ============================================================ */
+        body {
+            min-height: 100vh;
+            background: #F7F3EE;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 16px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #2A2438;
+        }
+
+        /* ============================================================
+           RECORDS TABLE — <table>
+           ADD: id="records-table"
+           NOTE: remove the inline border="1" attribute on <table> —
+           it draws the browser's default grey 3D border on every
+           cell on top of our hairline borders, doubling them up.
+           Same for cellpadding="10" — replaced by td/th padding below.
+           (No new elements; just dropping two legacy attributes.)
+        ============================================================ */
+        #records-table {
+            width: 100%;
+            max-width: 760px;
+            border-collapse: collapse;
+            background: #FFFFFF;
+            border: 1px solid #E5DED2;
+            border-top: 5px solid #BFA046;
+            box-shadow: 0 10px 28px rgba(46, 31, 77, 0.08);
+            font-size: 0.92rem;
+        }
+
+        /* ============================================================
+           HEADER ROW — <th>
+           Letterhead violet band, Georgia serif, letter-spaced caps
+        ============================================================ */
+        #records-table th {
+            background: #2E1F4D;
+            color: #F7F3EE;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            text-align: left;
+            padding: 14px 18px;
+            border-bottom: 1px solid #BFA046;
+        }
+
+        /* ============================================================
+           DATA CELLS — <td>
+        ============================================================ */
+        #records-table td {
+            padding: 12px 18px;
+            border-bottom: 1px solid #E5DED2;
+            color: #2A2438;
+            vertical-align: middle;
+        }
+
+        /* Zebra striping for readability */
+        #records-table tbody tr:nth-child(even) td {
+            background: #FBF9F5;
+        }
+
+        /* Row hover */
+        #records-table tbody tr:hover td {
+            background: #F3EEF8;
+        }
+
+        /* Last row — no double border at bottom */
+        #records-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ============================================================
+           EDIT LINK — <a> in the last column
+           ADD: class="edit-link"
+        ============================================================ */
+        .edit-link {
+            color: #2E1F4D;
+            font-weight: 600;
+            text-decoration: none;
+            letter-spacing: 0.2px;
+            border-bottom: 1px solid #BFA046;
+            padding-bottom: 1px;
+            transition: color 0.18s ease, border-color 0.18s ease;
+        }
+
+        .edit-link:hover {
+            color: #8A6F22;
+            border-color: #8A6F22;
+        }
+
+        /* ============================================================
+           RESPONSIVE — mobile (≤ 640 px)
+           Convert each row into a stacked card so a six-column
+           table doesn't overflow on small screens.
+        ============================================================ */
+        @media (max-width: 640px) {
+
+            #records-table {
+                border: none;
+                background: transparent;
+                box-shadow: none;
+            }
+
+            #records-table thead {
+                display: none;
+            }
+
+            #records-table tbody tr {
+                display: block;
+                background: #FFFFFF;
+                border: 1px solid #E5DED2;
+                border-left: 4px solid #BFA046;
+                box-shadow: 0 6px 18px rgba(46, 31, 77, 0.08);
+                margin-bottom: 14px;
+                padding: 6px 0;
+            }
+
+            #records-table tbody tr:nth-child(even) td {
+                background: transparent;
+            }
+
+            #records-table tbody tr:hover td {
+                background: transparent;
+            }
+
+            #records-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 16px;
+                border-bottom: 1px solid #F0EBE2;
+                text-align: right;
+            }
+
+            #records-table tr:last-child td:last-child,
+            #records-table td:last-child {
+                border-bottom: none;
+            }
+
+            /* Label each value using the column name via data-label */
+            #records-table td::before {
+                content: attr(data-label);
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: 700;
+                font-size: 0.78rem;
+                letter-spacing: 0.6px;
+                text-transform: uppercase;
+                color: #2E1F4D;
+                text-align: left;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <table cellpadding="10" id="records-table">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>student_id</th>
+            <th>course</th>
+            <th>session</th>
+            <th>email</th>
+            <th>action</th>
+        </tr>
+        {% for stu in students %}
+            <tr>
+            <td data-label="id">{{stu.id}}</td>
+            <td data-label="name">{{stu.name}}</td>
+            <td data-label="student_id">{{stu.student_id}}</td>
+            <td data-label="course">{{stu.course}}</td>
+            <td data-label="session">{{stu.session}}</td>
+            <td data-label="email">{{stu.email}}</td>
+            <td data-label="action"><a href="/erpadmin/form1_edit/{{stu.id}}" class="edit-link">Edit</a></td>
+            </tr>
+
+        {% endfor %}
+    </table>
+
 </body>
 </html>
