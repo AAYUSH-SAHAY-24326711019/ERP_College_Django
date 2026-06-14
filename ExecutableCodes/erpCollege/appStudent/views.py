@@ -5,7 +5,7 @@ from .forms import StudentImageUploadForm
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from appFaculty.models import StudentWiseAttendance
+from appFaculty.models import Faculty, StudentWiseAttendance
 from appFaculty.models import FacultyWiseAttendance
 from django.db.models import Count
 
@@ -169,6 +169,31 @@ def student_attendance_dashboard(request):
     attendance_logs = StudentWiseAttendance.objects.filter(
         student_id=student_id
     ).order_by('-attendance_date')
+
+    # faculty_map = {
+    # f.faculty_id: f.faculty_name
+    # for f in Faculty.objects.all()
+    # }
+    faculty_map = {
+    f.faculty_id: {
+        'name': f.faculty_name,
+        'designation': f.faculty_designation
+    }
+    for f in Faculty.objects.all()
+    }
+
+    # for log in attendance_logs:
+    #     log.faculty_name = faculty_map.get(log.faculty_id, "Unknown")
+
+    for log in attendance_logs:
+        faculty = faculty_map.get(log.faculty_id)
+
+        if faculty:
+            log.faculty_display = (
+            f"{faculty['name']} ({faculty['designation']})"
+            )
+        else:
+            log.faculty_display = "Unknown"
 
     attendance_summary = []
 

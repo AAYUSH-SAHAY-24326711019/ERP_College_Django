@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 
 <head>
@@ -136,6 +136,419 @@
 
     <br><br>
 
+
+<script>
+function showLogs(){
+
+    document.getElementById(
+        'attendance-table'
+    ).style.display = 'block'
+}
+
+</script>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>
+        Student Attendance
+    </title>
+
+    <style>
+
+        /* ============================================================
+           RESET
+        ============================================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ============================================================
+           PAGE BACKGROUND — warm paper tone, same as the rest of the
+           ERP suite
+        ============================================================ */
+        body {
+            min-height: 100vh;
+            background: #F7F3EE;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 48px 16px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #2A2438;
+        }
+
+        /* ============================================================
+           CARD HEADER — h1
+           ADD: id="form-title"
+           Same letterhead frame as every other page: thick gold rule
+           on top, hairline gold rule on bottom of the violet panel.
+        ============================================================ */
+        #form-title {
+            width: 100%;
+            max-width: 760px;
+            background: #2E1F4D;
+            color: #F7F3EE;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 700;
+            font-size: clamp(1.35rem, 3vw, 1.75rem);
+            letter-spacing: 0.5px;
+            text-align: left;
+            padding: 26px 36px 22px;
+            border-top: 5px solid #BFA046;
+            border-bottom: 1px solid #BFA046;
+        }
+
+        /* ============================================================
+           META STRIP — the <h3> "Student : {{ student_id }}"
+           ADD: id="meta-student"
+           Same lavender / gold-left-rule strip used on the
+           Attendance page for "Faculty" / "Date".
+        ============================================================ */
+        #meta-student {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            width: 100%;
+            max-width: 760px;
+            background: #F3EEF8;
+            border: 1px solid #E5DED2;
+            border-top: none;
+            padding: 12px 36px;
+            border-left: 4px solid #BFA046;
+            font-size: 0;
+        }
+
+        #meta-student::before {
+            content: "Student";
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #2E1F4D;
+            flex: 0 0 90px;
+        }
+
+        #meta-student::after {
+            font-size: 0.95rem;
+            color: #564A6E;
+        }
+
+        /* ============================================================
+           PAGE WRAPPER — content card below the header band
+           Both tables, the section heading and the button sit on a
+           shared white card, mirroring #student-form on other pages.
+        ============================================================ */
+        #dashboard-content {
+            background: #FFFFFF;
+            width: 100%;
+            max-width: 760px;
+            padding: 36px 36px 32px;
+            border: 1px solid #E5DED2;
+            box-shadow: 0 10px 28px rgba(46, 31, 77, 0.08);
+        }
+
+        /* ============================================================
+           SECTION HEADING — h2 "Attendance Summary"
+           ADD: id="section-title"
+        ============================================================ */
+        #section-title {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2E1F4D;
+            letter-spacing: 0.3px;
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+            border-bottom: 2px solid #BFA046;
+            display: inline-block;
+        }
+
+        /* ============================================================
+           TABLES — shared styling
+           ADD: class="records-table" to BOTH <table> elements
+           (the summary table and #attendance-table).
+           NOTE: remove the inline border="1" and cellpadding="10"
+           attributes from both <table> tags — they paint default
+           grey 3D borders on top of these hairline ones. Same fix
+           applied to the list pages earlier.
+        ============================================================ */
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #FFFFFF;
+            border: 1px solid #E5DED2;
+            font-size: 0.92rem;
+            margin-bottom: 28px;
+        }
+
+        .records-table th {
+            background: #2E1F4D;
+            color: #F7F3EE;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 700;
+            font-size: 0.82rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 1px solid #BFA046;
+        }
+
+        .records-table td {
+            padding: 11px 16px;
+            border-bottom: 1px solid #E5DED2;
+            color: #2A2438;
+            vertical-align: middle;
+        }
+
+        .records-table tbody tr:nth-child(even) td {
+            background: #FBF9F5;
+        }
+
+        .records-table tbody tr:hover td {
+            background: #F3EEF8;
+        }
+
+        .records-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ============================================================
+           SHOW LOGS BUTTON — <button onclick="showLogs()">
+           ADD: id="btn-toggle"  class="btn"
+           Secondary / outline treatment, same family as #btn-reset
+           on the form pages.
+        ============================================================ */
+        #btn-toggle {
+            background: #FFFFFF;
+            border: 1px solid #2E1F4D;
+            color: #2E1F4D;
+            padding: 10px 24px;
+            border-radius: 2px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            cursor: pointer;
+            margin-bottom: 28px;
+            transition: background 0.18s ease, border-color 0.18s ease;
+        }
+
+        #btn-toggle:hover {
+            background: #F3EEF8;
+            border-color: #BFA046;
+        }
+
+        /* ============================================================
+           ATTENDANCE LOG TABLE — #attendance-table
+           Keeps the original hide/show behaviour driven by JS
+           (display: none -> 'block'), now layered onto the shared
+           .records-table styling.
+        ============================================================ */
+        #attendance-table {
+            display: none;
+        }
+
+        /* ============================================================
+           RESPONSIVE — mobile (≤ 640 px)
+           Stack each table row into a card, as on the list pages.
+        ============================================================ */
+        @media (max-width: 640px) {
+
+            #form-title {
+                padding: 20px 22px 18px;
+            }
+
+            #meta-student {
+                padding: 12px 22px;
+            }
+
+            #meta-student::before {
+                flex: 0 0 70px;
+            }
+
+            #dashboard-content {
+                padding: 26px 22px 28px;
+            }
+
+            .records-table thead {
+                display: none;
+            }
+
+            .records-table tbody tr {
+                display: block;
+                border: 1px solid #E5DED2;
+                border-left: 4px solid #BFA046;
+                box-shadow: 0 6px 18px rgba(46, 31, 77, 0.08);
+                margin-bottom: 14px;
+                padding: 6px 0;
+            }
+
+            .records-table tbody tr:nth-child(even) td,
+            .records-table tbody tr:hover td {
+                background: transparent;
+            }
+
+            .records-table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 16px;
+                border-bottom: 1px solid #F0EBE2;
+                text-align: right;
+            }
+
+            .records-table tr:last-child td:last-child,
+            .records-table td:last-child {
+                border-bottom: none;
+            }
+
+            .records-table td::before {
+                content: attr(data-label);
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                font-weight: 700;
+                font-size: 0.78rem;
+                letter-spacing: 0.6px;
+                text-transform: uppercase;
+                color: #2E1F4D;
+                text-align: left;
+            }
+
+            #btn-toggle {
+                display: block;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1 id="form-title">Attendance Dashboard</h1>
+
+    <h3 id="meta-student">
+
+        Student :
+        {{ student_id }}
+
+    </h3>
+
+    <div id="dashboard-content">
+
+        <h2 id="section-title">
+
+            Attendance Summary
+
+        </h2>
+
+        <table class="records-table">
+
+            <tr>
+
+                <th>Subject</th>
+
+                <th>Total Classes</th>
+
+                <th>Present</th>
+
+                <th>Attendance %</th>
+
+            </tr>
+
+            {% for item in attendance_summary %}
+
+            <tr>
+
+                <td data-label="Subject">
+
+                    {{ item.subject }}
+
+                </td>
+
+                <td data-label="Total Classes">
+
+                    {{ item.total_classes }}
+
+                </td>
+
+                <td data-label="Present">
+
+                    {{ item.present_classes }}
+
+                </td>
+
+                <td data-label="Attendance %">
+
+                    {{ item.percentage }} %
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        <button onclick="showLogs()" id="btn-toggle" class="btn">
+
+            Show Logs
+
+        </button>
+
+        <table class="records-table" id="attendance-table">
+
+            <tr>
+
+                <th>Date</th>
+
+                <th>Course</th>
+
+                <th>Subject</th>
+
+                <th>Faculty</th>
+
+            </tr>
+
+            {% for log in attendance_logs %}
+
+            <tr>
+
+                <td data-label="Date">
+                    {{ log.attendance_date }}
+                </td>
+
+                <td data-label="Course">
+                    {{ log.course_name }}
+                </td>
+
+                <td data-label="Subject">
+                    {{ log.subject }}
+                </td>
+
+                <td data-label="Faculty">
+                    <!-- {{ log.faculty_id }} -->
+                    {{ log.faculty_display}}
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
 
 <script>
 function showLogs(){
