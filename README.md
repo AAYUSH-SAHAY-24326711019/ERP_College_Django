@@ -58,5 +58,5 @@ After submission, this project shall be considered the **property of Aryabhatta 
 
 **Author:** Aayush Sahay
 **Enrollment No.: 24326711019** 🎓<br/>
-**MCA - 4th semester AKU(2024-2026) **
+**MCA - 4th semester AKU(2024-2026)**<br/>
 **Cimage Center of Digital Technology and Entrepreneurship, Patna**
