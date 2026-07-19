@@ -7,6 +7,8 @@ This document certifies that the following work is submitted as an **End Semeste
 **Project Developed By:**  
 **Aayush Sahay**  
 **Enrollment No.: 24326711019**
+**Guided By : Dr. Amit Kumar Shukla Sir**
+**Project Development Time : 31st March 2026 To 30th June 2026 (4 months)**
 
 **Institution:**  
 **CIMAGE – Center Of Digital Technology & Entrepreneurship, Patna**
