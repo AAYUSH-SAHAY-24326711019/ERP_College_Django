@@ -9,7 +9,7 @@ This document certifies that the following work is submitted as an **End Semeste
 **Enrollment No.: 24326711019**<br/>
 **Guided By : Dr. Amit Kumar Shukla Sir**<br/>
 **Project Development Time : 31st March 2026 To 30th June 2026 (4 months)**<br/>
-**Link of Video Guide : https://drive.google.com/file/d/14daJmLUtyXLkycscheTM4U4knzendk7Y/view?usp=sharing**<br/>
+<!--**Link of Video Guide : https://drive.google.com/file/d/14daJmLUtyXLkycscheTM4U4knzendk7Y/view?usp=sharing**<br/>-->
 **Institution:**
 **CIMAGE Center Of Digital Technology & Entrepreneurship, Patna**
 
